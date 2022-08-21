@@ -1,0 +1,37 @@
+﻿@using Bufter.Model
+@model Settings
+@{
+	ViewData["Title"] = "Settings";
+}
+
+<div class="p-5">
+	<form asp-controller="Settings" asp-action="Save" method="post">
+		<div class="row mb-2 align-items-center">
+			<label asp-for="SaveRoom" class="col-sm-2 col-form-label text-end">Save Room</label>
+			<div class="col-sm-10">
+				<input class="form-check-input" type="checkbox" asp-for="SaveRoom">
+			</div>
+		</div>
+		<div class="row mb-2 align-items-center">
+			<label asp-for="Room" class="col-sm-2 col-form-label text-end">Room</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" asp-for="Room">
+			</div>
+		</div>
+		<div class="row mb-2 align-items-center">
+			<label asp-for="SavePerson" class="col-sm-2 col-form-label text-end">Save Person</label>
+			<div class="col-sm-10">
+				<input class="form-check-input" type="checkbox" asp-for="SavePerson">
+			</div>
+		</div>
+		<div class="row mb-2 align-items-center">
+			<label asp-for="Person" class="col-sm-2 col-form-label text-end">Person</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" asp-for="Person">
+			</div>
+		</div>
+		<div class="row">
+			<button type="submit" class="btn btn-primary mx-auto col-2">Save</button>
+		</div>
+	</form>
+</div>
