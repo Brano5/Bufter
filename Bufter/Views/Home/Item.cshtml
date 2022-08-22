@@ -23,8 +23,8 @@
 
 	</div>
 
-	<div class="col-4 p-4 mt-4 d-grid">
-		<div class="btn-group-vertical">
+	<div class="col-4 p-4 mt-4">
+		<div class="btn-group-vertical" style="width: 100%">
 			<a class="btn btn-primary" role="button" asp-controller="Home" asp-action="Room">Room: @Model.Item2</a>
 			<a class="btn btn-primary" role="button" asp-controller="Home" asp-action="Person" asp-route-Room="@Model.Item2">Person: @Model.Item3</a>
 			<a class="btn btn-primary active" role="button" asp-controller="Home" asp-action="Item">Item</a>
