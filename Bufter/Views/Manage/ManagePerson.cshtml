@@ -1,35 +1,48 @@
 ﻿@using Bufter.Model
-@model IEnumerable<Person>
+@model Tuple<IEnumerable<Room>, IEnumerable<Person>>
 @{
-    ViewData["Title"] = "Manage Person";
+	ViewData["Title"] = "Manage Person";
 }
 
 <div class="row">
-	<div class="col-8 text-center p-4">
+	<div class="col-md-8 text-center p-4">
 		<div class="row">
-			@foreach (Person person in Model)
+			<form class="d-flex" role="search" asp-controller="Manage" asp-action="ManagePersonSearch" method="get">
+				<select class="form-select" id="RoomId" name="RoomId" style="width: 30%">
+					<!option value="-1" @(Context.Request.Query["RoomId"]=="-1"?"selected":"")>Every</!option>
+					@foreach (Room room in Model.Item1)
+					{
+						<!option value="@room.Id" @(Context.Request.Query["RoomId"]==room.Id.ToString()?"selected":"")>@room.Name</!option>
+					}
+				</select>
+				<input class="form-control mx-2" type="search" placeholder="Search" aria-label="Search" id="Search" name="Search" value="@Context.Request.Query["Search"]">
+				<button class="btn btn-outline-primary" type="submit">Filter</button>
+			</form>
+		</div>
+		<div class="row">
+			@foreach (Person person in Model.Item2)
 			{
-				<div class="col-3 p-2">
-					<div class="card">
-						@if (@person.Image != "")
-						{
-							<img src="~/uploads/@person.Image" class="card-img-top">
-						}
-						<div class="card-body">
-							<h5 class="card-title">@person.Name</h5>
-							<p class="card-text">@person.RoomId</p>
-							<p class="card-text">Bill: @person.Bill, Total bill: @person.TotalBill</p>
-							<a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal" data-bs-id="@person.Id" data-bs-name="@person.Name" data-bs-roomId="@person.RoomId" data-bs-bill="@person.Bill" data-bs-totalBill="@person.TotalBill" data-bs-image="@person.Image">Edit</a>
-							<a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id="@person.Id" data-bs-name="@person.Name">Delete</a>
-							<span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Created: @person.Created, Updated: @person.Updated">
-								<svg width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
-									<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-									<path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-								</svg>
-							</span>
-						</div>
+				<div class="col-md-3 p-2">
+				<div class="card">
+					@if (@person.Image != "")
+					{
+					<img src="~/uploads/@person.Image" class="card-img-top">
+					}
+					<div class="card-body">
+						<h5 class="card-title">@person.Name</h5>
+						<p class="card-text">@Model.Item1.FirstOrDefault(a => a.Id == person.RoomId)?.Name</p>
+						<p class="card-text">Bill: @person.Bill, Total bill: @person.TotalBill</p>
+						<a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal" data-bs-id="@person.Id" data-bs-name="@person.Name" data-bs-roomId="@person.RoomId" data-bs-bill="@person.Bill" data-bs-totalBill="@person.TotalBill" data-bs-image="@person.Image">Edit</a>
+						<a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id="@person.Id" data-bs-name="@person.Name">Delete</a>
+						<span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Created: @person.Created, Updated: @person.Updated">
+							<svg width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+								<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+								<path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+							</svg>
+						</span>
 					</div>
 				</div>
+			</div>
 			}
 		</div>
 		<div class="row">
@@ -37,7 +50,7 @@
 		</div>
 	</div>
 
-	<div class="col-4 p-4 mt-4">
+	<div class="col-md-4 p-4 mt-4">
 		<div class="btn-group-vertical" style="width: 100%">
 			<a class="btn btn-primary" role="button" asp-controller="Manage" asp-action="ManageRoom">Room</a>
 			<a class="btn btn-primary active" role="button" asp-controller="Manage" asp-action="ManagePerson">Person</a>
@@ -67,10 +80,11 @@
 						<label for="RoomId" class="col-sm-3 col-form-label text-end">Room</label>
 						<div class="col-sm-9">
 							<select class="form-select" id="RoomId" name="RoomId" aria-label="Default select example">
-								<option selected>Open this select menu</option>
-								<option value="1">One</option>
-								<option value="2">Two</option>
-								<option value="3">Three</option>
+								<option value="-1">Every</option>
+									@foreach (Room room in Model.Item1)
+									{
+									<option value="@room.Id">@room.Name</option>
+									}
 							</select>
 						</div>
 					</div>
@@ -109,10 +123,11 @@
 						<label for="RoomId" class="col-sm-3 col-form-label text-end">Room</label>
 						<div class="col-sm-9">
 							<select class="form-select" id="RoomId" name="RoomId" aria-label="Default select example">
-								<option selected>Open this select menu</option>
-								<option value="1">One</option>
-								<option value="2">Two</option>
-								<option value="3">Three</option>
+								<option value="-1">Every</option>
+								@foreach (Room room in Model.Item1)
+								{
+									<option value="@room.Id">@room.Name</option>
+								}
 							</select>
 						</div>
 					</div>

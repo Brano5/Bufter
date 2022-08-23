@@ -45,16 +45,18 @@ namespace Bufter.Controllers
 
         public IActionResult Person(string room)
         {
-            if(Request.Cookies["SaveRoom"] == "True")
+            int roomId = _db.Rooms.Where(a => a.Name == room).FirstOrDefault().Id;
+            if (Request.Cookies["SaveRoom"] == "True")
             {
                 Response.Cookies.Append("Room", room);
             }
             
-            return View("Person", new Tuple<IEnumerable<Person>, string>(_db.Persons, room));
+            return View("Person", new Tuple<IEnumerable<Room>, IEnumerable<Person>>(_db.Rooms, _db.Persons.Where(a => a.RoomId == roomId)));
         }
 
         public IActionResult Item(string room, string person)
         {
+            int roomId = _db.Rooms.Where(a => a.Name == room).FirstOrDefault().Id;
             if (Request.Cookies["SaveRoom"] == "True")
             {
                 Response.Cookies.Append("Room", room);
@@ -63,7 +65,7 @@ namespace Bufter.Controllers
             {
                 Response.Cookies.Append("Person", person);
             }
-            return View("Item", new Tuple<IEnumerable<Item>, string, string>(_db.Items, room, person));
+            return View("Item", new Tuple<IEnumerable<Room>, IEnumerable<Item>>(_db.Rooms, _db.Items.Where(a => a.RoomId == roomId)));
         }
 
         public IActionResult Order(string room, string person, string item)

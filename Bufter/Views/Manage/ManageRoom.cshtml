@@ -5,11 +5,11 @@
 }
 
 <div class="row">
-	<div class="col-8 text-center p-4">
+	<div class="col-md-8 text-center p-4">
 		<div class="row">
 			@foreach (Room room in Model)
 			{
-				<div class="col-3 p-2">
+				<div class="col-md-3 p-2">
 					<div class="card">
 						@if (@room.Image != ""){
 							<img src="~/uploads/@room.Image" class="card-img-top">
@@ -35,7 +35,7 @@
 		</div>
 	</div>
 
-	<div class="col-4 p-4 mt-4">
+	<div class="col-md-4 p-4 mt-4">
 		<div class="btn-group-vertical" style="width: 100%">
 			<a class="btn btn-primary active" role="button" asp-controller="Manage" asp-action="ManageRoom">Room</a>
 			<a class="btn btn-primary" role="button" asp-controller="Manage" asp-action="ManagePerson">Person</a>

@@ -2,7 +2,7 @@
 const deleteModal = document.getElementById('deleteModal')
 deleteModal.addEventListener('show.bs.modal', event => {
     const button = event.relatedTarget
-    deleteModal.querySelector('.modal-body p').textContent = `Delete Room ${button.getAttribute('data-bs-name')}?`
+    deleteModal.querySelector('.modal-body p').textContent = `Delete ${button.getAttribute('data-bs-name')}?`
     deleteModal.querySelector('.modal-footer #Id').value = button.getAttribute('data-bs-id')
 })
 
@@ -22,6 +22,12 @@ editModal.addEventListener('show.bs.modal', event => {
     }
     if (button.getAttribute('data-bs-totalBill') != null) {
         editModal.querySelector('.modal-body #TotalBill').value = button.getAttribute('data-bs-totalBill')
+    }
+    if (button.getAttribute('data-bs-count') != null) {
+        editModal.querySelector('.modal-body #Count').value = button.getAttribute('data-bs-count')
+    }
+    if (button.getAttribute('data-bs-price') != null) {
+        editModal.querySelector('.modal-body #Price').value = button.getAttribute('data-bs-price')
     }
     editModal.querySelector('.modal-footer #Id').value = button.getAttribute('data-bs-id')
 })
