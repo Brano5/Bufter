@@ -29,10 +29,12 @@ namespace Bufter.Controllers
                     {
                         if (Request.Cookies["Person"] != null && Request.Cookies["Person"] != "")
                         {
-                            return View("Item", new Tuple<IEnumerable<Item>, string, string>(_db.Items, Request.Cookies["Room"], Request.Cookies["Person"]));
+                            int roomId = _db.Rooms.Where(a => a.Name == Request.Cookies["Room"]).FirstOrDefault().Id;
+                            return View("Item", new Tuple<IEnumerable<Room>, IEnumerable<Item>>(_db.Rooms, _db.Items.Where(a => a.RoomId == roomId)));
                         }
                     }
-                    return View("Person", new Tuple<IEnumerable<Person>, string>(_db.Persons, Request.Cookies["Room"]));
+                    int roomId = _db.Rooms.Where(a => a.Name == Request.Cookies["Room"]).FirstOrDefault().Id;
+                    return View("Person", new Tuple<IEnumerable<Person>, IEnumerable<Person>>(_db.Persons, _db.Persons.Where(a => a.RoomId == roomId)));
                 }
             }
             return View("Room", _db.Rooms);
@@ -70,6 +72,18 @@ namespace Bufter.Controllers
 
         public IActionResult Order(string room, string person, string item)
         {
+            Item itemDb = _db.Items.Where(a => a.Name == item).FirstOrDefault();
+            itemDb.Count--;
+            double price = itemDb.Price;
+            _db.Items.Update(itemDb);
+            _db.SaveChanges();
+
+            Person personDb = _db.Persons.Where(a => a.Name == person).FirstOrDefault();
+            personDb.TotalBill += price;
+            personDb.Bill -= price;
+            _db.Persons.Update(personDb);
+            _db.SaveChanges();
+
             return Item(room, person);
             //return View("Item", new Tuple<IEnumerable<Item>, string, string>(_db.Items, room, person));
         }
