@@ -45,9 +45,9 @@ namespace Bufter.Controllers
             if(RoomId == -1)
                 persons = _db.Persons.Where(a => a.Name.Contains(Search));
             if (Search == null)
-                persons = _db.Persons.Where(a => a.RoomId == RoomId);
+                persons = _db.Persons.Where(a => a.RoomId == RoomId || a.RoomId == -1);
             if (RoomId != -1 && Search != null)
-                persons = _db.Persons.Where(a => a.RoomId == RoomId && a.Name.Contains(Search));
+                persons = _db.Persons.Where(a => (a.RoomId == RoomId || a.RoomId == -1) && a.Name.Contains(Search));
             return View("ManagePerson", new Tuple<IEnumerable<Room>, IEnumerable<Person>>(_db.Rooms, persons));
         }
 
@@ -65,9 +65,9 @@ namespace Bufter.Controllers
             if (RoomId == -1)
                 items = _db.Items.Where(a => a.Name.Contains(Search));
             if (Search == null)
-                items = _db.Items.Where(a => a.RoomId == RoomId);
+                items = _db.Items.Where(a => a.RoomId == RoomId || a.RoomId == -1);
             if (RoomId != -1 && Search != null)
-                items = _db.Items.Where(a => a.RoomId == RoomId && a.Name.Contains(Search));
+                items = _db.Items.Where(a => (a.RoomId == RoomId || a.RoomId == -1) && a.Name.Contains(Search));
             return View("ManageItem", new Tuple<IEnumerable<Room>, IEnumerable<Item>>(_db.Rooms, items));
         }
 

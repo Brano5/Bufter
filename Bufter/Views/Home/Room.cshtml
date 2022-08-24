@@ -16,6 +16,15 @@
 							{
 								<img src="~/uploads/@room.Image" class="card-img-top">
 							}
+							else
+							{
+								<div class="mx-auto">
+									<svg width="40%" fill="currentColor" class="bi bi-circle" viewBox="0 0 16 16">
+										<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+										<text x="23%" y="80%" font-size="0.8em">@room.Name[0]</text>
+									</svg>
+								</div>
+							}
 							<div class="card-body">
 								<h5 class="card-title">@room.Name</h5>
 								<p class="card-text">@room.Description</p>

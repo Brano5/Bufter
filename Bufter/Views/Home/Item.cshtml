@@ -1,7 +1,19 @@
 ﻿@using Bufter.Model
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor context
 @model Tuple<IEnumerable<Room>, IEnumerable<Item>>
 @{
 	ViewData["Title"] = "Home";
+
+	var room = Context.Request.Query["Room"];
+	if (Context.Request.Query["Room"].Count() == 0)
+	{
+		room = context.HttpContext.Request.Cookies["Room"];
+	}
+	var person = Context.Request.Query["Person"];
+	if (Context.Request.Query["Person"].Count() == 0)
+	{
+		person = context.HttpContext.Request.Cookies["Person"];
+	}
 }
 
 <div class="row">
@@ -10,11 +22,20 @@
 			@foreach (Item item in Model.Item2)
 			{
 				<div class="col-md-3 p-2">
-					<a asp-controller="Home" asp-action="Order" asp-route-Room="@Context.Request.Query["Room"]" asp-route-Person="@Context.Request.Query["Person"]" asp-route-Item="@item.Name" class="text-decoration-none text-black">
+					<a asp-controller="Home" asp-action="Order" asp-route-Room="@room" asp-route-Person="@person" asp-route-Item="@item.Name" class="text-decoration-none text-black">
 						<div class="card">
 							@if (@item.Image != "")
 							{
 								<img src="~/uploads/@item.Image" class="card-img-top">
+							}
+							else
+							{
+								<div class="mx-auto">
+									<svg width="40%" fill="currentColor" class="bi bi-circle" viewBox="0 0 16 16">
+										<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+										<text x="23%" y="80%" font-size="0.8em">@item.Name[0]</text>
+									</svg>
+								</div>
 							}
 							<div class="card-body">
 								<h5 class="card-title">@item.Name</h5>
@@ -31,10 +52,9 @@
 
 	<div class="col-md-4 p-4 mt-4">
 		<div class="btn-group-vertical" style="width: 100%">
-			<a class="btn btn-primary" role="button" asp-controller="Home" asp-action="Room">Room: @Context.Request.Query["Room"]</a>
-			<a class="btn btn-primary" role="button" asp-controller="Home" asp-action="Person" asp-route-Room="@Context.Request.Query["Room"]">Person: @Context.Request.Query["Person"]</a>
+			<a class="btn btn-primary" role="button" asp-controller="Home" asp-action="Room">Room: @room</a>
+			<a class="btn btn-primary" role="button" asp-controller="Home" asp-action="Person" asp-route-Room="@room">Person: @person</a>
 			<a class="btn btn-primary active" role="button" asp-controller="Home" asp-action="Item">Item</a>
 		</div>
 	</div>
 </div>
-

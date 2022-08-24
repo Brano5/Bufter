@@ -21,6 +21,8 @@ namespace Bufter.Controllers
 
         public IActionResult Index()
         {
+            if (checkCookies())
+                return RedirectToAction("Index", "Home");
             if (Request.Cookies["SaveRoom"] == "True")
             {
                 if (Request.Cookies["Room"] != null && Request.Cookies["Room"] != "")
@@ -29,15 +31,15 @@ namespace Bufter.Controllers
                     {
                         if (Request.Cookies["Person"] != null && Request.Cookies["Person"] != "")
                         {
-                            int roomId = _db.Rooms.Where(a => a.Name == Request.Cookies["Room"]).FirstOrDefault().Id;
-                            return View("Item", new Tuple<IEnumerable<Room>, IEnumerable<Item>>(_db.Rooms, _db.Items.Where(a => a.RoomId == roomId)));
+                            int roomId1 = _db.Rooms.Where(a => a.Name == Request.Cookies["Room"]).FirstOrDefault().Id;
+                            return View("Item", new Tuple<IEnumerable<Room>, IEnumerable<Item>>(_db.Rooms, _db.Items.Where(a => a.RoomId == roomId1 || a.RoomId == -1)));
                         }
                     }
-                    int roomId = _db.Rooms.Where(a => a.Name == Request.Cookies["Room"]).FirstOrDefault().Id;
-                    return View("Person", new Tuple<IEnumerable<Person>, IEnumerable<Person>>(_db.Persons, _db.Persons.Where(a => a.RoomId == roomId)));
+                    int roomId2 = _db.Rooms.Where(a => a.Name == Request.Cookies["Room"]).FirstOrDefault().Id;
+                    return View("Person", new Tuple<IEnumerable<Person>, IEnumerable<Person>>(_db.Persons, _db.Persons.Where(a => a.RoomId == roomId2 || a.RoomId == -1)));
                 }
             }
-            return View("Room", _db.Rooms);
+            return Room();
         }
 
         public IActionResult Room()
@@ -48,26 +50,26 @@ namespace Bufter.Controllers
         public IActionResult Person(string room)
         {
             int roomId = _db.Rooms.Where(a => a.Name == room).FirstOrDefault().Id;
-            if (Request.Cookies["SaveRoom"] == "True")
+            Response.Cookies.Append("Room", room);
+
+            if (Request.Cookies["SavePerson"] == "True")
             {
-                Response.Cookies.Append("Room", room);
+                if (Request.Cookies["Person"] != null && Request.Cookies["Person"] != "")
+                {
+                    return View("Item", new Tuple<IEnumerable<Room>, IEnumerable<Item>>(_db.Rooms, _db.Items.Where(a => a.RoomId == roomId || a.RoomId == -1)));
+                }
             }
-            
-            return View("Person", new Tuple<IEnumerable<Room>, IEnumerable<Person>>(_db.Rooms, _db.Persons.Where(a => a.RoomId == roomId)));
+
+            return View("Person", new Tuple<IEnumerable<Room>, IEnumerable<Person>>(_db.Rooms, _db.Persons.Where(a => a.RoomId == roomId || a.RoomId == -1)));
         }
 
         public IActionResult Item(string room, string person)
         {
             int roomId = _db.Rooms.Where(a => a.Name == room).FirstOrDefault().Id;
-            if (Request.Cookies["SaveRoom"] == "True")
-            {
-                Response.Cookies.Append("Room", room);
-            }
-            if (Request.Cookies["SavePerson"] == "True")
-            {
-                Response.Cookies.Append("Person", person);
-            }
-            return View("Item", new Tuple<IEnumerable<Room>, IEnumerable<Item>>(_db.Rooms, _db.Items.Where(a => a.RoomId == roomId)));
+            Response.Cookies.Append("Room", room);
+            Response.Cookies.Append("Person", person);
+
+            return View("Item", new Tuple<IEnumerable<Room>, IEnumerable<Item>>(_db.Rooms, _db.Items.Where(a => a.RoomId == roomId || a.RoomId == -1)));
         }
 
         public IActionResult Order(string room, string person, string item)
@@ -92,6 +94,22 @@ namespace Bufter.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        private bool checkCookies()
+        {
+            bool change = false;
+            if (Request.Cookies["SaveRoom"] == null)
+            {
+                Response.Cookies.Append("SaveRoom", "True");
+                change = true;
+            }
+            if (Request.Cookies["SavePerson"] == null)
+            {
+                Response.Cookies.Append("SavePerson", "True");
+                change = true;
+            }
+            return change;
         }
     }
 }

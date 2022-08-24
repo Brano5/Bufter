@@ -7,7 +7,9 @@ namespace Bufter.Controllers
 	{
 		public IActionResult Index()
 		{
-			Settings settings = new Settings();
+            if(checkCookies())
+                return RedirectToAction("Index", "Settings");
+            Settings settings = new Settings();
 			settings.SaveRoom = Request.Cookies["SaveRoom"] == "True" ? true : false;
             settings.SavePerson = Request.Cookies["SavePerson"] == "True" ? true : false;
             settings.Room = Request.Cookies["Room"];
@@ -37,6 +39,22 @@ namespace Bufter.Controllers
                 Response.Cookies.Delete("Person");
             }
             return View("Settings", settings);
+        }
+
+        private bool checkCookies()
+        {
+            bool change = false;
+            if (Request.Cookies["SaveRoom"] == null)
+            {
+                Response.Cookies.Append("SaveRoom", "True");
+                change = true;
+            }
+            if (Request.Cookies["SavePerson"] == null)
+            {
+                Response.Cookies.Append("SavePerson", "True");
+                change = true;
+            }
+            return change;
         }
     }
 }
