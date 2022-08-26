@@ -36,7 +36,7 @@ namespace Bufter.Controllers
                         }
                     }
                     int roomId2 = _db.Rooms.Where(a => a.Name == Request.Cookies["Room"]).FirstOrDefault().Id;
-                    return View("Person", new Tuple<IEnumerable<Person>, IEnumerable<Person>>(_db.Persons, _db.Persons.Where(a => a.RoomId == roomId2 || a.RoomId == -1)));
+                    return View("Person", new Tuple<IEnumerable<Room>, IEnumerable<Person>>(_db.Rooms, _db.Persons.Where(a => a.RoomId == roomId2 || a.RoomId == -1)));
                 }
             }
             return Room();

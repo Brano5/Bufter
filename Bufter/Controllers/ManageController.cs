@@ -216,7 +216,7 @@ namespace Bufter.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateItem(string Name, string Description, int RoomId, int Count, int Price, IFormFile Image)
+        public IActionResult CreateItem(string Name, string Description, int RoomId, int Count, string Price, IFormFile Image)
         {
             if (Name == null || Name == "" || _db.Persons.Where(a => a.Name == Name).Count() != 0)
             {
@@ -243,7 +243,7 @@ namespace Bufter.Controllers
                 item.Image = "";
             }
             item.Count = Count;
-            item.Price = Price;
+            item.Price = Convert.ToDouble(Price.Replace(".", ","));
             item.Created = DateTime.Now;
             item.Updated = DateTime.Now;
             _db.Items.Add(item);
@@ -253,7 +253,7 @@ namespace Bufter.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditItem(int Id, string Name, string Description, int RoomId, int Count, int Price, IFormFile Image)
+        public IActionResult EditItem(int Id, string Name, string Description, int RoomId, int Count, string Price, IFormFile Image)
         {
             if (Name == null || Name == "" || _db.Persons.Where(a => a.Name == Name).Count() > 1)
             {
@@ -276,7 +276,7 @@ namespace Bufter.Controllers
                 item.Image = uniqueFileName;
             }
             item.Count = Count;
-            item.Price = Price;
+            item.Price = Convert.ToDouble(Price.Replace(".", ","));
             item.Updated = DateTime.Now;
             _db.Items.Update(item);
             _db.SaveChanges();

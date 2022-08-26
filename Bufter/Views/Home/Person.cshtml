@@ -19,21 +19,24 @@
 				<div class="col-md-3 p-2">
 					<a asp-controller="Home" asp-action="Item" asp-route-Room="@room" asp-route-Person="@person.Name" class="text-decoration-none text-black" style="min-height">
 						<div class="card">
-							@if (@person.Image != "")
-							{
-								<img src="~/uploads/@person.Image" class="card-img-top">
-							}
-							else
-							{
-								<div class="mx-auto">
-									<svg width="40%" fill="currentColor" class="bi bi-circle" viewBox="0 0 16 16">
-										<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-										<text x="23%" y="80%" font-size="0.8em">@person.Name[0]</text>
-									</svg>
-								</div>
-							}
+							<div style="height: 8vw;">
+								@if (@person.Image != "")
+								{
+									<img src="~/uploads/@person.Image" class="card-img-top" style="width:auto; height:auto; max-width:100%; max-height:100%">
+								}
+								else
+								{
+									<div class="mx-auto">
+										<svg width="40%" fill="currentColor" class="bi bi-circle" viewBox="0 0 16 16">
+											<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+											<text x="23%" y="80%" font-size="0.8em">@person.Name[0]</text>
+										</svg>
+									</div>
+								}
+							</div>
 							<div class="card-body">
-								<h5 class="card-title">@person.Name <br> @person.Bill</h5>
+								<h5 class="card-title">@person.Name</h5>
+								<p class="card-text"><b>Bill: @person.Bill</b></p>
 							</div>
 						</div>
 					</a>
