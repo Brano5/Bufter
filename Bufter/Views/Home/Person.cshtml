@@ -17,7 +17,7 @@
 			@foreach (Person person in Model.Item2)
 			{
 				<div class="col-md-3 p-2">
-					<a asp-controller="Home" asp-action="Item" asp-route-Room="@room" asp-route-Person="@person.Name" class="text-decoration-none text-black" style="min-height">
+					<a asp-controller="Home" asp-action="Item" asp-route-Room="@room" asp-route-Person="@person.Name" class="text-decoration-none text-black">
 						<div class="card">
 							<div style="height: 8vw;">
 								@if (@person.Image != "")
