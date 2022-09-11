@@ -9,6 +9,8 @@
 	{
 		room = context.HttpContext.Request.Cookies["Room"];
 	}
+
+	ViewData["NavText"] = room;
 }
 
 <div class="row">
@@ -16,7 +18,7 @@
 		<div class="row">
 			@foreach (Person person in Model.Item2)
 			{
-				<div class="col-md-3 p-2">
+				<div class="col-12 col-md-6 col-lg-4 col-xl-3 p-2">
 					<a asp-controller="Home" asp-action="Item" asp-route-Room="@room" asp-route-Person="@person.Name" class="text-decoration-none text-black">
 						<div class="card">
 							<div style="height: 8vw;">
@@ -26,17 +28,12 @@
 								}
 								else
 								{
-									<div class="mx-auto">
-										<svg width="40%" fill="currentColor" class="bi bi-circle" viewBox="0 0 16 16">
-											<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-											<text x="23%" y="80%" font-size="0.8em">@person.Name[0]</text>
-										</svg>
-									</div>
+									<p style="font-size: 5vw" class="mb-0">@person.Name[0]</p>
 								}
 							</div>
 							<div class="card-body">
 								<h5 class="card-title">@person.Name</h5>
-								<p class="card-text"><b>Bill: @person.Bill</b></p>
+								<p class="card-text"><b>Bill: @person.Bill€</b></p>
 							</div>
 						</div>
 					</a>
@@ -49,7 +46,7 @@
 	<div class="col-md-4 p-4 mt-4">
 		<div class="btn-group-vertical" style="width: 100%">
 			<a class="btn btn-primary" role="button" asp-controller="Home" asp-action="Room">Room: @room</a>
-			<a class="btn btn-primary active" role="button" asp-controller="Home" asp-action="Person">Person</a>
+			<a class="btn btn-primary active" role="button" asp-controller="Home" asp-action="Person" asp-route-Room="@room">Person</a>
 			<a class="btn btn-primary disabled" role="button" asp-controller="Home" asp-action="Item">Item</a>
 		</div>
 	</div>

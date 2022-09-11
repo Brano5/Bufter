@@ -1,36 +1,49 @@
 ﻿//Modal
 const deleteModal = document.getElementById('deleteModal')
-deleteModal.addEventListener('show.bs.modal', event => {
-    const button = event.relatedTarget
-    deleteModal.querySelector('.modal-body p').textContent = `Delete ${button.getAttribute('data-bs-name')}?`
-    deleteModal.querySelector('.modal-footer #Id').value = button.getAttribute('data-bs-id')
-})
+if (deleteModal != null) {
+    deleteModal.addEventListener('show.bs.modal', event => {
+        const button = event.relatedTarget
+        deleteModal.querySelector('.modal-body p').textContent = `Delete ${button.getAttribute('data-bs-name')}?`
+        deleteModal.querySelector('.modal-footer #Id').value = button.getAttribute('data-bs-id')
+    })
+}
 
 const editModal = document.getElementById('editModal')
-editModal.addEventListener('show.bs.modal', event => {
-    const button = event.relatedTarget
-    const image = button.getAttribute('data-bs-image')
-    editModal.querySelector('.modal-body #Name').value = button.getAttribute('data-bs-name')
-    if (button.getAttribute('data-bs-description') != null) {
-        editModal.querySelector('.modal-body #Description').value = button.getAttribute('data-bs-description')
-    }
-    if (button.getAttribute('data-bs-roomId') != null) {
-        editModal.querySelector('.modal-body #RoomId').value = button.getAttribute('data-bs-roomId')
-    }
-    if (button.getAttribute('data-bs-bill') != null) {
-        editModal.querySelector('.modal-body #Bill').value = button.getAttribute('data-bs-bill')
-    }
-    if (button.getAttribute('data-bs-totalBill') != null) {
-        editModal.querySelector('.modal-body #TotalBill').value = button.getAttribute('data-bs-totalBill')
-    }
-    if (button.getAttribute('data-bs-count') != null) {
-        editModal.querySelector('.modal-body #Count').value = button.getAttribute('data-bs-count')
-    }
-    if (button.getAttribute('data-bs-price') != null) {
-        editModal.querySelector('.modal-body #Price').value = button.getAttribute('data-bs-price')
-    }
-    editModal.querySelector('.modal-footer #Id').value = button.getAttribute('data-bs-id')
-})
+if (editModal != null) {
+    editModal.addEventListener('show.bs.modal', event => {
+        const button = event.relatedTarget
+        const image = button.getAttribute('data-bs-image')
+        editModal.querySelector('.modal-body #Name').value = button.getAttribute('data-bs-name')
+        if (button.getAttribute('data-bs-description') != null) {
+            editModal.querySelector('.modal-body #Description').value = button.getAttribute('data-bs-description')
+        }
+        if (button.getAttribute('data-bs-roomId') != null) {
+            editModal.querySelector('.modal-body #RoomId').value = button.getAttribute('data-bs-roomId')
+        }
+        if (button.getAttribute('data-bs-bill') != null) {
+            editModal.querySelector('.modal-body #Bill').value = button.getAttribute('data-bs-bill')
+        }
+        if (button.getAttribute('data-bs-totalBill') != null) {
+            editModal.querySelector('.modal-body #TotalBill').value = button.getAttribute('data-bs-totalBill')
+        }
+        if (button.getAttribute('data-bs-count') != null) {
+            editModal.querySelector('.modal-body #Count').value = button.getAttribute('data-bs-count')
+        }
+        if (button.getAttribute('data-bs-price') != null) {
+            editModal.querySelector('.modal-body #Price').value = button.getAttribute('data-bs-price')
+        }
+        editModal.querySelector('.modal-footer #Id').value = button.getAttribute('data-bs-id')
+    })
+}
+
+const addMoneyModal = document.getElementById('addMoneyModal')
+if (addMoneyModal != null) {
+    addMoneyModal.addEventListener('show.bs.modal', event => {
+        const button = event.relatedTarget
+
+        var a = addMoneyModal.querySelectorAll('.modal-body a').forEach(element => element.setAttribute("href", element.getAttribute("href") + '&Person=' + button.getAttribute('data-bs-name')));
+    })
+}
 
 //Popovers
 const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')

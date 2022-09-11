@@ -8,5 +8,6 @@ namespace Bufter.Models
         public bool SavePerson { get; set; }
         public string? Room { get; set; }
         public string? Person { get; set; }
+        public double? Bill { get; set; }
     }
 }

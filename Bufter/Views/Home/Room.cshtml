@@ -9,25 +9,22 @@
 		<div class="row">
 			@foreach (Room room in Model)
 			{
-				<div class="col-md-3 p-2">
+				<div class="col-12 col-md-6 col-lg-4 col-xl-3 p-2">
 					<a asp-controller="Home" asp-action="Person" asp-route-Room="@room.Name" class="text-decoration-none text-black">
 						<div class="card">
-							@if (@room.Image != "")
-							{
-								<img src="~/uploads/@room.Image" class="card-img-top">
-							}
-							else
-							{
-								<div class="mx-auto">
-									<svg width="40%" fill="currentColor" class="bi bi-circle" viewBox="0 0 16 16">
-										<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-										<text x="23%" y="80%" font-size="0.8em">@room.Name[0]</text>
-									</svg>
-								</div>
-							}
+							<div style="height: 8vw;">
+								@if (@room.Image != "")
+								{
+									<img src="~/uploads/@room.Image" class="card-img-top" style="width:auto; height:auto; max-width:100%; max-height:100%">
+								}
+								else
+								{
+									<p style="font-size: 5vw" class="mb-0">@room.Name[0]</p>
+								}
+							</div>
 							<div class="card-body">
 								<h5 class="card-title">@room.Name</h5>
-								<p class="card-text">@room.Description</p>
+								<p class="card-text">@room.Description<br></p>
 							</div>
 						</div>
 					</a>

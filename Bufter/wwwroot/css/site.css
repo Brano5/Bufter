@@ -1,18 +1,40 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+}
+
+.navbar {
+    padding: 0;
+}
+
+.nav-link {
+    color: rgba(0, 0, 0, 0.5);
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+    border-bottom: 2px solid transparent;
+}
+
+.nav-link:focus, .nav-link:hover {
+    color: rgba(0, 0, 0, 1);
+    border-bottom: 2px solid black;
+}
+
+.navbar-nav .nav-link.active, .navbar-nav .show > .nav-link {
+    color: rgba(0, 0, 0, 1);
+    font-weight: bold;
+    border-bottom: 2px solid black;
 }

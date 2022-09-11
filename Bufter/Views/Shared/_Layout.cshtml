@@ -11,7 +11,7 @@
 </head>
 <body>
 	<header>
-		<nav class="navbar fixed-top navbar-expand-lg bg-light">
+		<nav class="navbar fixed-top navbar-expand-sm bg-light">
 			<div class="container-fluid">
 				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Bufter</a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,15 +20,18 @@
 				<div class="collapse navbar-collapse" id="navbar">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item">
-							<a class="nav-link @Html.IsSelected(actions: "Index", controllers: "Home")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+							<a class="nav-link @Html.IsSelected(controllers: "Home")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
 						</li>
+					</ul>
+					<ul class="navbar-nav mb-2 mb-lg-0">
+						<b>@ViewData["NavText"]</b>
 					</ul>
 					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 						<li class="nav-item">
-							<a class="nav-link @Html.IsSelected(actions: "Index", controllers: "Manage")" asp-area="" asp-controller="Manage" asp-action="Index">Manage</a>
+							<a class="nav-link @Html.IsSelected(controllers: "Manage")" asp-area="" asp-controller="Manage" asp-action="Index">Manage</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link @Html.IsSelected(actions: "Index", controllers: "Settings")" asp-area="" asp-controller="Settings" asp-action="Index">Settings</a>
+							<a class="nav-link @Html.IsSelected(controllers: "Settings")" asp-area="" asp-controller="Settings" asp-action="Index">Settings</a>
 						</li>
 					</ul>
 				</div>

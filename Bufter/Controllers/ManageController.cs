@@ -4,6 +4,8 @@ using Bufter.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
+using System;
+using System.Xml.Linq;
 
 namespace Bufter.Controllers
 {
@@ -12,14 +14,15 @@ namespace Bufter.Controllers
         private readonly ApplicationDBContext _db;
         private readonly IWebHostEnvironment env;
         private readonly AlertManager aM;
+        private readonly LogManager _logManager;
 
-
-        public ManageController(ApplicationDBContext db, IWebHostEnvironment environment, AlertManager alertManager)
+        public ManageController(ApplicationDBContext db, IWebHostEnvironment environment, AlertManager alertManager, LogManager logManager)
 		{
 			_db = db;
             env = environment;
             aM = alertManager;
-		}
+            _logManager = logManager;
+        }
 
 		public ActionResult Index()
 		{
@@ -101,6 +104,9 @@ namespace Bufter.Controllers
             room.Updated = DateTime.Now;
             _db.Rooms.Add(room);
             _db.SaveChanges();
+
+            _logManager.addLog("INFO", "Created Room " + Name + " by " + Request.Cookies["Person"], HttpContext);
+
             //aM.addAlert("success", "Room created successfully!");
             return ManageRoom();
         }
@@ -116,7 +122,11 @@ namespace Bufter.Controllers
             if (Description == null)
                 Description = "";
 
-            Room room = _db.Rooms.Find(Id);
+            Room? room = _db.Rooms.Find(Id);
+            if(room == null)
+            {
+                return ManageRoom();
+            }
             room.Name = Name;
             room.Description = Description;
             if (Image != null)
@@ -130,6 +140,9 @@ namespace Bufter.Controllers
             room.Updated = DateTime.Now;
             _db.Rooms.Update(room);
             _db.SaveChanges();
+
+            _logManager.addLog("INFO", "Edited Room " + Name + " by " + Request.Cookies["Person"], HttpContext);
+
             //aM.addAlert("success", "Room updated successfully!");
             return ManageRoom();
         }
@@ -139,6 +152,9 @@ namespace Bufter.Controllers
         {
             _db.Rooms.Remove(_db.Rooms.Find(Id));
             _db.SaveChanges();
+
+            _logManager.addLog("INFO", "Deleted Room " + Id + " by " + Request.Cookies["Person"], HttpContext);
+
             //aM.addAlert("success", "Room created successfully!");
             return ManageRoom();
         }
@@ -173,20 +189,31 @@ namespace Bufter.Controllers
             person.Updated = DateTime.Now;
             _db.Persons.Add(person);
             _db.SaveChanges();
+
+            _logManager.addLog("INFO", "Created Person " + Name + " by " + Request.Cookies["Person"], HttpContext);
+
             //aM.addAlert("success", "Room created successfully!");
             return ManagePerson();
         }
 
         [HttpPost]
-        public IActionResult EditPerson(int Id, string Name, int RoomId, int Bill, int TotalBill, IFormFile Image)
+        public IActionResult EditPerson(int Id, string Name, int RoomId, string Bill, string TotalBill, IFormFile Image)
         {
             if (Name == null || Name == "" || _db.Persons.Where(a => a.Name == Name).Count() > 1)
             {
                 //aM.addAlert("warning", "Wrong room name!");
                 return ManagePerson();
             }
+            if (Bill == null)
+                Bill = "0";
+            if (TotalBill == null)
+                TotalBill = "0";
 
-            Person person = _db.Persons.Find(Id);
+            Person? person = _db.Persons.Find(Id);
+            if(person == null)
+            {
+                return ManagePerson();
+            }
             person.Name = Name;
             person.RoomId = RoomId;
             if (Image != null)
@@ -197,11 +224,14 @@ namespace Bufter.Controllers
                 Image.CopyTo(new FileStream(filePath, FileMode.Create));
                 person.Image = uniqueFileName;
             }
-            person.Bill = Bill;
-            person.TotalBill = TotalBill;
+            person.Bill = Convert.ToDouble(Bill.Replace(".", ","));
+            person.TotalBill = Convert.ToDouble(TotalBill.Replace(".", ","));
             person.Updated = DateTime.Now;
             _db.Persons.Update(person);
             _db.SaveChanges();
+
+            _logManager.addLog("INFO", "Edited Person " + Name + " by " + Request.Cookies["Person"], HttpContext);
+
             //aM.addAlert("success", "Room updated successfully!");
             return ManagePerson();
         }
@@ -211,6 +241,9 @@ namespace Bufter.Controllers
         {
             _db.Persons.Remove(_db.Persons.Find(Id));
             _db.SaveChanges();
+
+            _logManager.addLog("INFO", "Deleted Person " + Id + " by " + Request.Cookies["Person"], HttpContext);
+
             //aM.addAlert("success", "Room created successfully!");
             return ManagePerson();
         }
@@ -225,6 +258,8 @@ namespace Bufter.Controllers
             }
             if (Description == null)
                 Description = "";
+            if (Price == null)
+                Price = "0";
 
             Item item = new Item();
             item.Name = Name;
@@ -248,6 +283,9 @@ namespace Bufter.Controllers
             item.Updated = DateTime.Now;
             _db.Items.Add(item);
             _db.SaveChanges();
+
+            _logManager.addLog("INFO", "Created Item " + Name + " by " + Request.Cookies["Person"], HttpContext);
+
             //aM.addAlert("success", "Room created successfully!");
             return ManageItem();
         }
@@ -262,8 +300,14 @@ namespace Bufter.Controllers
             }
             if (Description == null)
                 Description = "";
+            if (Price == null)
+                Price = "0";
 
-            Item item = _db.Items.Find(Id);
+            Item? item = _db.Items.Find(Id);
+            if (item == null)
+            {
+                return ManageItem();
+            }
             item.Name = Name;
             item.Description = Description;
             item.RoomId = RoomId;
@@ -280,6 +324,9 @@ namespace Bufter.Controllers
             item.Updated = DateTime.Now;
             _db.Items.Update(item);
             _db.SaveChanges();
+
+            _logManager.addLog("INFO", "Edited Item " + Name + " by " + Request.Cookies["Person"], HttpContext);
+
             //aM.addAlert("success", "Room updated successfully!");
             return ManageItem();
         }
@@ -289,8 +336,34 @@ namespace Bufter.Controllers
         {
             _db.Items.Remove(_db.Items.Find(Id));
             _db.SaveChanges();
+
+            _logManager.addLog("INFO", "Deleted Item " + Id + " by " + Request.Cookies["Person"], HttpContext);
+
             //aM.addAlert("success", "Room created successfully!");
             return ManageItem();
+        }
+
+        public IActionResult AddMoney(string person, string amount)
+        {
+            Person? personDb = _db.Persons.Where(a => a.Name == person).FirstOrDefault();
+            if (personDb == null)
+            {
+                return ManagePerson();
+            }
+            if(amount == "0")
+            {
+                personDb.Bill = 0;
+            }
+            else
+            {
+                personDb.Bill +=  Convert.ToDouble(amount.Replace(".", ","));
+            }
+            _db.Persons.Update(personDb);
+            _db.SaveChanges();
+
+            _logManager.addLog("INFO", "Add Money " + person + " amount " + amount + " by " + Request.Cookies["Person"], HttpContext);
+
+            return ManagePerson();
         }
 
         private string GetUniqueFileName(string fileName)

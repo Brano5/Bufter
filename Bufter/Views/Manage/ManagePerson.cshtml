@@ -1,215 +1,214 @@
 ﻿@using Bufter.Model
 @model Tuple<IEnumerable<Room>, IEnumerable<Person>>
 @{
-    ViewData["Title"] = "Manage Person";
+	ViewData["Title"] = "Manage Person";
 }
 
 <div class="row">
-    <div class="col-md-8 text-center p-4">
-        <div class="row">
-            <form class="d-flex" role="search" asp-controller="Manage" asp-action="ManagePersonSearch" method="get">
-                <select class="form-select" id="RoomId" name="RoomId" style="width: 30%">
-                    <!option value="-1" @(Context.Request.Query["RoomId"] == "-1" ? "selected" : "")>Every</!option>
-                    @foreach (Room room in Model.Item1)
-                    {
-                        <!option value="@room.Id" @(Context.Request.Query["RoomId"] == room.Id.ToString() ? "selected" : "")>@room.Name</!option>
-                    }
-                </select>
-                <input class="form-control mx-2" type="search" placeholder="Search" aria-label="Search" id="Search" name="Search" value="@Context.Request.Query["Search"]">
-                <button class="btn btn-outline-primary" type="submit">Filter</button>
-            </form>
-        </div>
-        <div class="row">
-            @foreach (Person person in Model.Item2)
-            {
-                <div class="col-md-3 p-2">
-                    <div class="card">
-                        @if (@person.Image != "")
-                        {
-                            <img src="~/uploads/@person.Image" class="card-img-top">
-                        }
-                        else
-                        {
-                            <div class="mx-auto">
-                                <svg width="40%" fill="currentColor" class="bi bi-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                    <text x="23%" y="80%" font-size="0.8em">@person.Name[0]</text>
-                                </svg>
-                            </div>
-                        }
-                        <div class="card-body">
-                            <h5 class="card-title">@person.Name</h5>
-                            <p class="card-text">@Model.Item1.FirstOrDefault(a => a.Id == person.RoomId)?.Name <br> <b>Bill: @person.Bill</b> <br> Total bill: @person.TotalBill</p>
-                            <a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal" data-bs-id="@person.Id" data-bs-name="@person.Name" data-bs-roomId="@person.RoomId" data-bs-bill="@person.Bill" data-bs-totalBill="@person.TotalBill" data-bs-image="@person.Image">Edit</a>
-                            <a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id="@person.Id" data-bs-name="@person.Name">Delete</a>
-                            <span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Created: @person.Created, Updated: @person.Updated">
-                                <svg width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
-                                </svg>
-                            </span>
-                            <a class="btn btn-primary btn-sm" asp-controller="Manage" asp-action="AddMoney" asp-route-Person="@person.Name" asp-route-Amount="-1">Clear bill</a>
-                            <a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addMoneyModal">Add money</a>
-                        </div>
-                    </div>
-                </div>
-            }
-        </div>
-        <div class="row">
-            <a class="btn btn-primary col-3 mx-auto" data-bs-toggle="modal" data-bs-target="#createModal">Create</a>
-        </div>
-    </div>
+	<div class="col-md-8 text-center p-4">
+		<div class="row">
+			<form class="d-flex" role="search" asp-controller="Manage" asp-action="ManagePersonSearch" method="get">
+				<select class="form-select" id="RoomId" name="RoomId" style="width: 30%">
+					<!option value="-1" @(Context.Request.Query["RoomId"] == "-1" ? "selected" : "")>Every</!option>
+					@foreach (Room room in Model.Item1)
+					{
+						<!option value="@room.Id" @(Context.Request.Query["RoomId"] == room.Id.ToString() ? "selected" : "")>@room.Name</!option>
+					}
+				</select>
+				<input class="form-control mx-2" type="search" placeholder="Search" aria-label="Search" id="Search" name="Search" value="@Context.Request.Query["Search"]">
+				<button class="btn btn-outline-primary" type="submit">Filter</button>
+			</form>
+		</div>
+		<div class="row">
+			@foreach (Person person in Model.Item2)
+			{
+				<div class="col-12 col-md-6 col-lg-4 col-xl-3 p-2">
+					<div class="card">
+						<div style="height: 8vw;">
+							@if (@person.Image != "")
+							{
+								<img src="~/uploads/@person.Image" class="card-img-top" style="width:auto; height:auto; max-width:100%; max-height:100%">
+							}
+							else
+							{
+								<p style="font-size: 5vw" class="mb-0">@person.Name[0]</p>
+							}
+						</div>
+						<div class="card-body">
+							<h5 class="card-title">@person.Name</h5>
+							<p class="card-text">@Model.Item1.FirstOrDefault(a => a.Id == person.RoomId)?.Name <br> <b>Bill: @person.Bill€</b> <br> Total bill: @person.TotalBill€</p>
+							<a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal" data-bs-id="@person.Id" data-bs-name="@person.Name" data-bs-roomId="@person.RoomId" data-bs-bill="@person.Bill.ToString().Replace(",", ".")" data-bs-totalBill="@person.TotalBill.ToString().Replace(",", ".")" data-bs-image="@person.Image">Edit</a>
+							<a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id="@person.Id" data-bs-name="@person.Name">Delete</a>
+							<span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Created: @person.Created, Updated: @person.Updated">
+								<svg width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+									<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+									<path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+								</svg>
+							</span>
+							<div class="mt-1">
+								<a class="btn btn-primary btn-sm" asp-controller="Manage" asp-action="AddMoney" asp-route-Person="@person.Name" asp-route-Amount="0">Clear bill</a>
+								<a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addMoneyModal" data-bs-name="@person.Name">Add money</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			}
+		</div>
+		<div class="row">
+			<a class="btn btn-primary col-3 mx-auto" data-bs-toggle="modal" data-bs-target="#createModal">Create</a>
+		</div>
+	</div>
 
-    <div class="col-md-4 p-4 mt-4">
-        <div class="btn-group-vertical" style="width: 100%">
-            <a class="btn btn-primary" role="button" asp-controller="Manage" asp-action="ManageRoom">Room</a>
-            <a class="btn btn-primary active" role="button" asp-controller="Manage" asp-action="ManagePerson">Person</a>
-            <a class="btn btn-primary" role="button" asp-controller="Manage" asp-action="ManageItem">Item</a>
-        </div>
-    </div>
+	<div class="col-md-4 p-4 mt-4">
+		<div class="btn-group-vertical" style="width: 100%">
+			<a class="btn btn-primary" role="button" asp-controller="Manage" asp-action="ManageRoom">Room</a>
+			<a class="btn btn-primary active" role="button" asp-controller="Manage" asp-action="ManagePerson">Person</a>
+			<a class="btn btn-primary" role="button" asp-controller="Manage" asp-action="ManageItem">Item</a>
+		</div>
+	</div>
 </div>
 
 
 
 <div class="modal fade" id="createModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form asp-controller="Manage" asp-action="CreatePerson" method="post" enctype="multipart/form-data">
-                <div class="modal-header">
-                    <h5 class="modal-title">Create Person</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row align-items-center">
-                        <label for="Name" class="col-sm-3 col-form-label text-end">Name*</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" type="text" id="Name" name="Name">
-                        </div>
-                    </div>
-                    <div class="row align-items-center">
-                        <label for="RoomId" class="col-sm-3 col-form-label text-end">Room</label>
-                        <div class="col-sm-9">
-                            <select class="form-select" id="RoomId" name="RoomId" aria-label="Default select example">
-                                <option value="-1">Every</option>
-                                @foreach (Room room in Model.Item1)
-                                {
-                                    <option value="@room.Id">@room.Name</option>
-                                }
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row align-items-center">
-                        <label for="Image" class="col-sm-3 col-form-label text-end">Image</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" type="file" id="Image" name="Image">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Create</button>
-                </div>
-            </form>
-        </div>
-    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form asp-controller="Manage" asp-action="CreatePerson" method="post" enctype="multipart/form-data">
+				<div class="modal-header">
+					<h5 class="modal-title">Create Person</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row align-items-center">
+						<label for="Name" class="col-sm-3 col-form-label text-end">Name*</label>
+						<div class="col-sm-9">
+							<input class="form-control" type="text" id="Name" name="Name">
+						</div>
+					</div>
+					<div class="row align-items-center">
+						<label for="RoomId" class="col-sm-3 col-form-label text-end">Room</label>
+						<div class="col-sm-9">
+							<select class="form-select" id="RoomId" name="RoomId" aria-label="Default select example">
+								<option value="-1">Every</option>
+								@foreach (Room room in Model.Item1)
+								{
+									<option value="@room.Id">@room.Name</option>
+								}
+							</select>
+						</div>
+					</div>
+					<div class="row align-items-center">
+						<label for="Image" class="col-sm-3 col-form-label text-end">Image</label>
+						<div class="col-sm-9">
+							<input class="form-control" type="file" id="Image" name="Image">
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary">Create</button>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
 
 <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form asp-controller="Manage" asp-action="EditPerson" method="post" enctype="multipart/form-data">
-                <div class="modal-header">
-                    <h5 class="modal-title">Edit Person</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row align-items-center">
-                        <label for="Name" class="col-sm-3 col-form-label text-end">Name*</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" type="text" id="Name" name="Name">
-                        </div>
-                    </div>
-                    <div class="row align-items-center">
-                        <label for="RoomId" class="col-sm-3 col-form-label text-end">Room</label>
-                        <div class="col-sm-9">
-                            <select class="form-select" id="RoomId" name="RoomId" aria-label="Default select example">
-                                <option value="-1">Every</option>
-                                @foreach (Room room in Model.Item1)
-                                {
-                                    <option value="@room.Id">@room.Name</option>
-                                }
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row align-items-center">
-                        <label for="Bill" class="col-sm-3 col-form-label text-end">Bill</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" type="number" id="Bill" name="Bill">
-                        </div>
-                    </div>
-                    <div class="row align-items-center">
-                        <label for="TotalBill" class="col-sm-3 col-form-label text-end">Total Bill</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" type="number" id="TotalBill" name="TotalBill">
-                        </div>
-                    </div>
-                    <div class="row align-items-center">
-                        <label for="Image" class="col-sm-3 col-form-label text-end">Image</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" type="file" id="Image" name="Image">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <input class="form-control" type="hidden" id="Id" Name="Id">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form asp-controller="Manage" asp-action="EditPerson" method="post" enctype="multipart/form-data">
+				<div class="modal-header">
+					<h5 class="modal-title">Edit Person</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row align-items-center">
+						<label for="Name" class="col-sm-3 col-form-label text-end">Name*</label>
+						<div class="col-sm-9">
+							<input class="form-control" type="text" id="Name" name="Name">
+						</div>
+					</div>
+					<div class="row align-items-center">
+						<label for="RoomId" class="col-sm-3 col-form-label text-end">Room</label>
+						<div class="col-sm-9">
+							<select class="form-select" id="RoomId" name="RoomId" aria-label="Default select example">
+								<option value="-1">Every</option>
+								@foreach (Room room in Model.Item1)
+								{
+									<option value="@room.Id">@room.Name</option>
+								}
+							</select>
+						</div>
+					</div>
+					<div class="row align-items-center">
+						<label for="Bill" class="col-sm-3 col-form-label text-end">Bill</label>
+						<div class="col-sm-9">
+							<input class="form-control" type="number" step="0.01" id="Bill" name="Bill">
+						</div>
+					</div>
+					<div class="row align-items-center">
+						<label for="TotalBill" class="col-sm-3 col-form-label text-end">Total Bill</label>
+						<div class="col-sm-9">
+							<input class="form-control" type="number" step="0.01" id="TotalBill" name="TotalBill">
+						</div>
+					</div>
+					<div class="row align-items-center">
+						<label for="Image" class="col-sm-3 col-form-label text-end">Image</label>
+						<div class="col-sm-9">
+							<input class="form-control" type="file" id="Image" name="Image">
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<input class="form-control" type="hidden" id="Id" Name="Id">
+					<button type="submit" class="btn btn-primary">Save</button>
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
 
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Delete Person</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Delete Person?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <form asp-controller="Manage" asp-action="DeletePerson" method="post">
-                    <input class="form-control" type="hidden" id="Id" Name="Id">
-                    <button type="submit" class="btn btn-primary">Delete</button>
-                </form>
-            </div>
-        </div>
-    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Delete Person</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<p>Delete Person?</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<form asp-controller="Manage" asp-action="DeletePerson" method="post">
+					<input class="form-control" type="hidden" id="Id" Name="Id">
+					<button type="submit" class="btn btn-primary">Delete</button>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
 
 <div class="modal fade" id="addMoneyModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Add money</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div>
-                    <a class="btn btn-primary btn" asp-controller="Manage" asp-action="AddMoney" asp-route-Person="@person.Name" asp-route-Amount="10">10</a>
-                    <a class="btn btn-primary btn" asp-controller="Manage" asp-action="AddMoney" asp-route-Person="@person.Name" asp-route-Amount="5">5</a>
-                    <a class="btn btn-primary btn" asp-controller="Manage" asp-action="AddMoney" asp-route-Person="@person.Name" asp-route-Amount="2">2</a>
-                    <a class="btn btn-primary btn" asp-controller="Manage" asp-action="AddMoney" asp-route-Person="@person.Name" asp-route-Amount="1">1</a>
-                    <a class="btn btn-primary btn" asp-controller="Manage" asp-action="AddMoney" asp-route-Person="@person.Name" asp-route-Amount="0.5">0.50</a>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Add money</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="d-flex justify-content-center">
+					<a class="btn btn-primary btn mx-1" asp-controller="Manage" asp-action="AddMoney" asp-route-Person="" asp-route-Amount="10">10</a>
+					<a class="btn btn-primary btn mx-1" asp-controller="Manage" asp-action="AddMoney" asp-route-Person="" asp-route-Amount="5">5</a>
+					<a class="btn btn-primary btn mx-1" asp-controller="Manage" asp-action="AddMoney" asp-route-Person="" asp-route-Amount="2">2</a>
+					<a class="btn btn-primary btn mx-1" asp-controller="Manage" asp-action="AddMoney" asp-route-Person="" asp-route-Amount="1">1</a>
+					<a class="btn btn-primary btn mx-1" asp-controller="Manage" asp-action="AddMoney" asp-route-Person="" asp-route-Amount="0.5">0.50</a>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
 </div>

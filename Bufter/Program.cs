@@ -9,6 +9,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<Bufter.AlertManager>();
+builder.Services.AddScoped<Bufter.LogManager>();
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
