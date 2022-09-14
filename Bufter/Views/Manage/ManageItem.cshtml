@@ -36,8 +36,7 @@
 						</div>
 						<div class="card-body">
 							<h5 class="card-title">@item.Name</h5>
-							<p class="card-text">@item.Description</p>
-							<p class="card-text">@Model.Item1.FirstOrDefault(a => a.Id == item.RoomId)?.Name <br> Count: @item.Count <br> <b>Price: @item.Price€</b></p>
+							<p class="card-text">@item.Description <br> @Model.Item1.FirstOrDefault(a => a.Id == item.RoomId)?.Name <br> Count: @item.Count <br> <b>Price: @item.Price€</b></p>
 							<a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModal" data-bs-id="@item.Id" data-bs-name="@item.Name" data-bs-description="@item.Description" data-bs-roomId="@item.RoomId" data-bs-count="@item.Count" data-bs-price="@item.Price.ToString().Replace(",", ".")" data-bs-image="@item.Image">Edit</a>
 							<a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id="@item.Id" data-bs-name="@item.Name">Delete</a>
 							<span class="d-inline-block" tabindex="0" data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Created: @item.Created, Updated: @item.Updated">

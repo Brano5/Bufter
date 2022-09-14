@@ -52,7 +52,7 @@
 		<div class="btn-group-vertical" style="width: 100%">
 			<a class="btn btn-primary" role="button" asp-controller="Home" asp-action="Room">Room: @room</a>
 			<a class="btn btn-primary" role="button" asp-controller="Home" asp-action="PersonHard" asp-route-Room="@room">Person: @person</a>
-			<a class="btn btn-primary active" role="button" asp-controller="Home" asp-action="Item">Item</a>
+			<a class="btn btn-primary active" role="button" asp-controller="Home" asp-action="Item" asp-route-Room="@room" asp-route-Person="@person">Item</a>
 		</div>
 		<div class="card mt-2 text-center">
 			<div class="card-body">

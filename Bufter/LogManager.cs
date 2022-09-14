@@ -26,7 +26,7 @@ namespace Bufter
             buyLogDb.IpAddress = getIPAddress(context);
             buyLogDb.PcName = getName();
             buyLogDb.UserAgent = getUserAgent(context);
-            buyLogDb.UniKey = getUniKey();
+            buyLogDb.UniKey = getUniKey(context);
             _db.BuyLog.Add(buyLogDb);
             _db.SaveChanges();
         }
@@ -40,7 +40,7 @@ namespace Bufter
             logDb.IpAddress = getIPAddress(context);
             logDb.PcName = getName();
             logDb.UserAgent = getUserAgent(context);
-            logDb.UniKey = getUniKey();
+            logDb.UniKey = getUniKey(context);
             _db.Log.Add(logDb);
             _db.SaveChanges();
         }
@@ -60,13 +60,13 @@ namespace Bufter
             return context.Request.Headers["User-Agent"].ToString();
         }
 
-        public string getUniKey()
+        public string getUniKey(HttpContext context)
         {
-            if (Request.Cookies["UniKey"] == null)
+            if (context.Request.Cookies["UniKey"] == null)
             {
-                Response.Cookies.Append("UniKey", Guid.NewGuid().ToString(), new CookieOptions { Expires = DateTime.Now.AddYears(10) });
+                context.Response.Cookies.Append("UniKey", Guid.NewGuid().ToString(), new CookieOptions { Expires = DateTime.Now.AddYears(10) });
             }
-            return Request.Cookies["UniKey"];
+            return context.Request.Cookies["UniKey"];
         }
     }
 }

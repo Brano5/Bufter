@@ -91,3 +91,14 @@ function alert(message, type) {
 
     hide(id);
 }
+
+
+$('.changeActiveClass').click(function (e) {
+
+    $('.changeActiveClass').removeClass('active');
+
+    var $this = $(this);
+    if (!$this.hasClass('active')) {
+        $this.addClass('active');
+    }
+});

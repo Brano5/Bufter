@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Xml.Linq;
+using System.Globalization;
 
 namespace Bufter.Controllers
 {
@@ -224,8 +225,8 @@ namespace Bufter.Controllers
                 Image.CopyTo(new FileStream(filePath, FileMode.Create));
                 person.Image = uniqueFileName;
             }
-            person.Bill = Convert.ToDouble(Bill.Replace(".", ","));
-            person.TotalBill = Convert.ToDouble(TotalBill.Replace(".", ","));
+            person.Bill = Math.Round(double.Parse(Bill, CultureInfo.InvariantCulture.NumberFormat), 2);
+            person.TotalBill = Math.Round(double.Parse(TotalBill, CultureInfo.InvariantCulture.NumberFormat), 2);
             person.Updated = DateTime.Now;
             _db.Persons.Update(person);
             _db.SaveChanges();
@@ -278,7 +279,7 @@ namespace Bufter.Controllers
                 item.Image = "";
             }
             item.Count = Count;
-            item.Price = Convert.ToDouble(Price.Replace(".", ","));
+            item.Price = Math.Round(double.Parse(Price, CultureInfo.InvariantCulture.NumberFormat), 2);
             item.Created = DateTime.Now;
             item.Updated = DateTime.Now;
             _db.Items.Add(item);
@@ -320,7 +321,7 @@ namespace Bufter.Controllers
                 item.Image = uniqueFileName;
             }
             item.Count = Count;
-            item.Price = Convert.ToDouble(Price.Replace(".", ","));
+            item.Price = Math.Round(double.Parse(Price, CultureInfo.InvariantCulture.NumberFormat), 2);
             item.Updated = DateTime.Now;
             _db.Items.Update(item);
             _db.SaveChanges();
@@ -356,7 +357,7 @@ namespace Bufter.Controllers
             }
             else
             {
-                personDb.Bill +=  Convert.ToDouble(amount.Replace(".", ","));
+                personDb.Bill +=  Math.Round(double.Parse(amount, CultureInfo.InvariantCulture.NumberFormat), 2);
             }
             _db.Persons.Update(personDb);
             _db.SaveChanges();

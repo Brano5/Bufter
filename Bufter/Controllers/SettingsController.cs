@@ -3,6 +3,7 @@ using Bufter.Model;
 using Bufter.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Globalization;
 
 namespace Bufter.Controllers
 {
@@ -65,7 +66,7 @@ namespace Bufter.Controllers
             }
             else
             {
-                personDb.Bill +=  Convert.ToDouble(amount.Replace(".", ","));
+                personDb.Bill +=  Math.Round(double.Parse(amount, CultureInfo.InvariantCulture.NumberFormat), 2);
             }
             _db.Persons.Update(personDb);
             _db.SaveChanges();
