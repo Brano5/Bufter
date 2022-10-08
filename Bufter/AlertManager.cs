@@ -1,4 +1,5 @@
-﻿using Microsoft.JSInterop;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.JSInterop;
 
 namespace Bufter
 {

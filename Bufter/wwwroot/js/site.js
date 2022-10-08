@@ -92,6 +92,12 @@ function alert(message, type) {
     hide(id);
 }
 
+function hide(id) {
+    setTimeout(function () {
+        $('#' + id).alert('close');
+    }, 5000);
+}
+
 
 $('.changeActiveClass').click(function (e) {
 

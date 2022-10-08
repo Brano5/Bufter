@@ -16,5 +16,6 @@ namespace Bufter.Data
         public DbSet<Item> Items { get; set; }
         public DbSet<Log> Log { get; set; }
         public DbSet<BuyLog> BuyLog { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

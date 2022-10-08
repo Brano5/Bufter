@@ -1,4 +1,5 @@
 ﻿@using Bufter.Helpers
+@using Microsoft.AspNetCore.Html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,6 +47,7 @@
 
 	<div class="container-fluid mt-5" style="min-height: 80vh;">
 		<main role="main" class="pb-3">
+			@Context.User.Identity.Name
 			@RenderBody()
 		</main>
 	</div>
@@ -71,6 +73,16 @@
 
 		<div class="position-fixed bottom-0 end-0" style="z-index: 11; width: 100%;">
 			<div id="alertPlaceholder"></div>
+			
+			@if (@TempData["Info"] != null)
+			{
+				var id = Guid.NewGuid();
+				<div class="alert alert-primary alert-dismissible d-flex align-items-center fade show" role="alert" id="@id">
+					<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill" /></svg>
+					<div>@TempData["Info"]</div>
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+			}
 		</div>
 	</div>
 

@@ -1,0 +1,29 @@
+﻿@using Bufter.Models
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="row justify-content-md-center">
+	<div class="col-md-4 mt-4">
+		<h2 class="text-center text-primary">Login</h2>
+		<form asp-controller="Login" asp-action="Login" method="post">
+			<div class="row align-items-center">
+				<label for="Name" class="col-sm-3 col-form-label text-end">Name*</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="text" id="Name" name="Name">
+				</div>
+			</div>
+			<div class="row align-items-center">
+				<label for="Password" class="col-sm-3 col-form-label text-end">Password*</label>
+				<div class="col-sm-9">
+					<input class="form-control" type="password" id="Password" name="Password">
+				</div>
+			</div>
+			<div class="row justify-content-md-center">
+				<button type="submit" class="btn btn-primary col mt-1">Login</button>
+			</div>
+		</form>
+	</div>
+</div>
+
+<button class="btn btn-primary" onclick="alert('sd', 'info')">Click</button>
