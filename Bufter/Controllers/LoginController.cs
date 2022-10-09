@@ -11,6 +11,7 @@ using System.Net.Sockets;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Components;
 
 namespace Bufter.Controllers
 {
@@ -20,6 +21,7 @@ namespace Bufter.Controllers
         private readonly IWebHostEnvironment env;
         private readonly AlertManager aM;
         private readonly LogManager _logManager;
+        private readonly NavigationManager navM;
 
         public LoginController(ApplicationDBContext db, IWebHostEnvironment environment, AlertManager alertManager, LogManager logManager)
         {
@@ -31,6 +33,11 @@ namespace Bufter.Controllers
 
         public ActionResult Index()
         {
+            if(HttpContext.User.Identity != null && HttpContext.User.Identity.Name != null)
+            {
+                return RedirectToAction("Index", "User");
+            }
+
             return View("../Security/Login");
         }
 
@@ -40,11 +47,11 @@ namespace Bufter.Controllers
             if (Name == null || Name == "" || _db.Rooms.Where(a => a.Name == Name).Count() > 1)
             {
                 //aM.addAlert("warning", "Wrong room name!");
-                return Index();
+                return RedirectToAction("Index", "Login");
             }
             if (Password == null || Password == "")
             {
-                return Index();
+                return RedirectToAction("Index", "Login");
             }
 
             User user = _db.Users.Where(a => a.Name == Name).Where(b => b.Password == Password).FirstOrDefault();
@@ -66,13 +73,24 @@ namespace Bufter.Controllers
 
                 @TempData["Info"] = "User legged in";
                 //aM.addAlert("success", "Room updated successfully!");
-                return Index();
+                return RedirectToAction("Index", "User");
             }
 
             _logManager.addLog("INFO", "Login User Failed " + Name + " by " + Request.Cookies["Person"], HttpContext);
 
             aM.addAlert("success", "Room updated successfully!");
-            return Index();
+            return RedirectToAction("Index", "Login");
+        }
+
+        public IActionResult LogOut()
+        {
+            HttpContext.SignOutAsync();
+
+            _logManager.addLog("INFO", "LogOut User", HttpContext);
+
+            @TempData["Info"] = "Succesfull LogOut.";
+
+            return RedirectToAction("Index", "Login");
         }
     }
 }

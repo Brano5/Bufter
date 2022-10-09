@@ -1,7 +1,7 @@
 ﻿@using Bufter.Models
-@model IEnumerable<Log>
+@model IEnumerable<BuyLog>
 @{
-	ViewData["Title"] = "Log";
+	ViewData["Title"] = "BuyLog";
 }
 
 <div class="row" id="log">
@@ -9,7 +9,9 @@
 		<thead>
 			<tr>
 				<th scope="col" data-sortable="true">Id</th>
-				<th scope="col" data-sortable="true">Name</th>
+				<th scope="col" data-sortable="true">Room</th>
+				<th scope="col" data-sortable="true">Person</th>
+				<th scope="col" data-sortable="true">Item</th>
 				<th scope="col" data-sortable="true">Description</th>
 				<th scope="col" data-sortable="true">Created</th>
 				<th scope="col" data-sortable="true">IpAddress</th>
@@ -19,17 +21,19 @@
 			</tr>
 		</thead>
 		<tbody class="table-group-divider">
-			@foreach (Log log in Model)
+			@foreach (BuyLog buyLog in Model)
 			{
 				<tr>
-					<th scope="row">@log.Id</th>
-					<td>@log.Name</td>
-					<td>@log.Description</td>
-					<td>@log.Created</td>
-					<td>@log.IpAddress</td>
-					<td>@log.PcName</td>
-					<td>@log.UserAgent</td>
-					<td>@log.UniKey</td>
+					<th scope="row">@buyLog.Id</th>
+					<td>@buyLog.Room</td>
+					<td>@buyLog.Person</td>
+					<td>@buyLog.Item</td>
+					<td>@buyLog.Description</td>
+					<td>@buyLog.Created</td>
+					<td>@buyLog.IpAddress</td>
+					<td>@buyLog.PcName</td>
+					<td>@buyLog.UserAgent</td>
+					<td>@buyLog.UniKey</td>
 				</tr>
 			}
 		</tbody>

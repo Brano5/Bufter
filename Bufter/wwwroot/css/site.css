@@ -21,20 +21,24 @@ body {
     padding: 0;
 }
 
-.nav-link {
+.navbar .nav-link {
     color: rgba(0, 0, 0, 0.5);
     padding-bottom: 1rem;
     padding-top: 1rem;
     border-bottom: 2px solid transparent;
 }
 
-.nav-link:focus, .nav-link:hover {
+.navbar .nav-link:focus, .navbar .nav-link:hover {
     color: rgba(0, 0, 0, 1);
     border-bottom: 2px solid black;
 }
 
-.navbar-nav .nav-link.active, .navbar-nav .show > .nav-link {
+.navbar .navbar-nav .nav-link.active, .navbar .navbar-nav .show > .nav-link {
     color: rgba(0, 0, 0, 1);
     font-weight: bold;
     border-bottom: 2px solid black;
+}
+
+.sidebar .nav-item .nav-link:not(.active) {
+    color: #212529 !important;
 }

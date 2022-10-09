@@ -26,18 +26,20 @@
 				<div class="collapse navbar-collapse" id="navbar">
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						<li class="nav-item text-center">
-							<a class="nav-link @Html.IsSelected(controllers: "Home")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+							<a class="nav-link @Html.IsSelected(controller: "Home")" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
 						</li>
 					</ul>
 					<ul class="navbar-nav mb-2 mb-lg-0 d-none d-sm-block">
-						<b>@ViewData["NavText"]</b>
+						<li class="text-center">
+							<b>@ViewData["NavText"]</b>
+						</li>
 					</ul>
 					<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 						<li class="nav-item text-center">
-							<a class="nav-link @Html.IsSelected(controllers: "Manage")" asp-area="" asp-controller="Manage" asp-action="Index">Manage</a>
+							<a class="nav-link @Html.IsSelected(controller: "Manage")" asp-area="" asp-controller="Manage" asp-action="Index">Manage</a>
 						</li>
 						<li class="nav-item text-center">
-							<a class="nav-link @Html.IsSelected(controllers: "Settings")" asp-area="" asp-controller="Settings" asp-action="Index">Settings</a>
+							<a class="nav-link @Html.IsSelected(controller: "Settings")" asp-area="" asp-controller="Settings" asp-action="Index">Settings</a>
 						</li>
 					</ul>
 				</div>
@@ -47,8 +49,83 @@
 
 	<div class="container-fluid mt-5" style="min-height: 80vh;">
 		<main role="main" class="pb-3">
-			@Context.User.Identity.Name
-			@RenderBody()
+			@if (@Html.IsLogged())
+			{
+				<div class="row">
+					<div class="sidebar col-md-2 bg-light mt-2 pt-2">
+						<ul class="nav nav-pills flex-column mb-auto">
+							<li class="nav-item">
+								<a class="nav-link @Html.IsSelected(controller: "User")" asp-area="" asp-controller="User" asp-action="Index">
+									<svg width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+										<path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z" />
+									</svg>
+									Users
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" data-bs-toggle="collapse" href="#collapse-log" role="button" aria-expanded="false" aria-controls="collapse-log">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-table" viewBox="0 0 16 16">
+										<path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h3zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z" />
+									</svg>
+									Log
+								</a>
+							</li>
+							<li class="collapse @Html.IsSelected(controllers: new string[] {"Log"}, actions: new string[] {"BuyLog", "Log"}, cssClass: "show")" id="collapse-log">
+								<ul class="nav nav-pills flex-column mb-auto">
+									<li class="nav-item">
+										<a class="nav-link ps-5 @Html.IsSelected(controller: "Log", action: "BuyLog")" asp-area="" asp-controller="Log" asp-action="BuyLog">
+											<svg width="16" height="16" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
+												<path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z" />
+											</svg>
+											Buy Log
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link ps-5 @Html.IsSelected(controller: "Log", action: "Log")" asp-area="" asp-controller="Log" asp-action="Log">
+											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-table" viewBox="0 0 16 16">
+												<path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm15 2h-4v3h4V4zm0 4h-4v3h4V8zm0 4h-4v3h3a1 1 0 0 0 1-1v-2zm-5 3v-3H6v3h4zm-5 0v-3H1v2a1 1 0 0 0 1 1h3zm-4-4h4V8H1v3zm0-4h4V4H1v3zm5-3v3h4V4H6zm4 4H6v3h4V8z" />
+											</svg>
+											Log
+										</a>
+									</li>
+								</ul>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link @Html.IsSelected(controller: "Chart")" asp-area="" asp-controller="Chart" asp-action="Index">
+									<svg width="16" height="16" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 16 16">
+										<path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07Z" />
+									</svg>
+									Chart
+								</a>
+							</li>
+						</ul>
+						<hr />
+						<ul class="nav nav-pills flex-column">
+							<li class="nav-item">
+								<a class="nav-link" asp-area="" asp-controller="Login" asp-action="LogOut">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+										<path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z" />
+										<path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
+									</svg>
+									Log Out
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link disabled" href="#">
+									<b>@Context.User.Identity.Name</b>
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div class="col-md-10 mt-2">
+						@RenderBody()
+					</div>
+				</div>
+			}
+			else
+			{
+				@RenderBody()
+			}
 		</main>
 	</div>
 
@@ -73,15 +150,33 @@
 
 		<div class="position-fixed bottom-0 end-0" style="z-index: 11; width: 100%;">
 			<div id="alertPlaceholder"></div>
-			
-			@if (@TempData["Info"] != null)
+
+			@if (@TempData["info"] != null)
 			{
 				var id = Guid.NewGuid();
 				<div class="alert alert-primary alert-dismissible d-flex align-items-center fade show" role="alert" id="@id">
 					<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill" /></svg>
-					<div>@TempData["Info"]</div>
+					<div>@TempData["info"]</div>
 					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+				</div>
+			}
+			@if (@TempData["success"] != null)
+			{
+				var id = Guid.NewGuid();
+				<div class="alert alert-success alert-dismissible d-flex align-items-center fade show" role="alert" id="@id">
+					<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill" /></svg>
+					<div>@TempData["success"]</div>
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			}
+			@if (@TempData["warning"] != null)
+			{
+				var id = Guid.NewGuid();
+				<div class="alert alert-warning alert-dismissible d-flex align-items-center fade show" role="alert" id="@id">
+					<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#exclamation-triangle-fill" /></svg>
+					<div>@TempData["warning"]</div>
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
 			}
 		</div>
 	</div>

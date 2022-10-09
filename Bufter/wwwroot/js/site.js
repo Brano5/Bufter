@@ -99,15 +99,15 @@ function hide(id) {
 }
 
 
-$('.changeActiveClass').click(function (e) {
+//$('.changeActiveClass').click(function (e) {
 
-    $('.changeActiveClass').removeClass('active');
+//    $('.changeActiveClass').removeClass('active');
 
-    var $this = $(this);
-    if (!$this.hasClass('active')) {
-        $this.addClass('active');
-    }
-});
+//    var $this = $(this);
+//    if (!$this.hasClass('active')) {
+//        $this.addClass('active');
+//    }
+//});
 
 
 
