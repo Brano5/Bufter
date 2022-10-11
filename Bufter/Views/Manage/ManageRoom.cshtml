@@ -14,7 +14,7 @@
 						<div class="h-8vw">
 							@if (@room.Image != "")
 							{
-								<img src="~/uploads/@room.Image" class="card-img-top img-letter">
+								<img src="~/uploads/@room.Image" alt="@room.Image" class="card-img-top img-letter">
 							}
 							else
 							{
@@ -63,21 +63,21 @@
 				</div>
 				<div class="modal-body">
 					<div class="row align-items-center">
-						<label for="Name" class="col-sm-3 col-form-label text-end">Name*</label>
+						<label for="NameCreateModal" class="col-sm-3 col-form-label text-end">Name*</label>
 						<div class="col-sm-9">
-							<input class="form-control" type="text" id="Name" name="Name">
+							<input class="form-control" type="text" id="NameCreateModal" name="Name">
 						</div>
 					</div>
 					<div class="row align-items-center">
-						<label for="Description" class="col-sm-3 col-form-label text-end">Description</label>
+						<label for="DescriptionCreateModal" class="col-sm-3 col-form-label text-end">Description</label>
 						<div class="col-sm-9">
-							<input class="form-control" type="text" id="Description" name="Description">
+							<input class="form-control" type="text" id="DescriptionCreateModal" name="Description">
 						</div>
 					</div>
 					<div class="row align-items-center">
-						<label for="Image" class="col-sm-3 col-form-label text-end">Image</label>
+						<label for="ImageCreateModal" class="col-sm-3 col-form-label text-end">Image</label>
 						<div class="col-sm-9">
-							<input class="form-control" type="file" id="Image" name="Image">
+							<input class="form-control" type="file" id="ImageCreateModal" name="Image">
 						</div>
 					</div>
 				</div>
@@ -100,21 +100,21 @@
 				</div>
 				<div class="modal-body">
 					<div class="row align-items-center">
-						<label for="Name" class="col-sm-3 col-form-label text-end">Name*</label>
+						<label for="NameEditModal" class="col-sm-3 col-form-label text-end">Name*</label>
 						<div class="col-sm-9">
-							<input class="form-control" type="text" id="Name" name="Name">
+							<input class="form-control" type="text" id="NameEditModal" name="Name">
 						</div>
 					</div>
 					<div class="row align-items-center">
-						<label for="Description" class="col-sm-3 col-form-label text-end">Description</label>
+						<label for="DescriptionEditModal" class="col-sm-3 col-form-label text-end">Description</label>
 						<div class="col-sm-9">
-							<input class="form-control" type="text" id="Description" name="Description">
+							<input class="form-control" type="text" id="DescriptionEditModal" name="Description">
 						</div>
 					</div>
 					<div class="row align-items-center">
-						<label for="Image" class="col-sm-3 col-form-label text-end">Image</label>
+						<label for="ImageEditModal" class="col-sm-3 col-form-label text-end">Image</label>
 						<div class="col-sm-9">
-							<input class="form-control" type="file" id="Image" name="Image" accept="image/png, image/jpeg">
+							<input class="form-control" type="file" id="ImageEditModal" name="Image" accept="image/png, image/jpeg">
 						</div>
 					</div>
 				</div>
@@ -141,7 +141,7 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 				<form asp-controller="Manage" asp-action="DeleteRoom" method="post">
-					<input class="form-control" type="hidden" id="Id" Name="Id">
+					<input class="form-control" type="hidden" id="IdDeleteModal" Name="Id">
 					<button type="submit" class="btn btn-primary">Delete</button>
 				</form>
 			</div>

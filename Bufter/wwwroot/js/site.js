@@ -4,7 +4,7 @@ if (deleteModal != null) {
     deleteModal.addEventListener('show.bs.modal', event => {
         const button = event.relatedTarget
         deleteModal.querySelector('.modal-body p').textContent = `Delete ${button.getAttribute('data-bs-name')}?`
-        deleteModal.querySelector('.modal-footer #Id').value = button.getAttribute('data-bs-id')
+        deleteModal.querySelector('.modal-footer #IdDeleteModal').value = button.getAttribute('data-bs-id')
     })
 }
 
@@ -13,26 +13,26 @@ if (editModal != null) {
     editModal.addEventListener('show.bs.modal', event => {
         const button = event.relatedTarget
         const image = button.getAttribute('data-bs-image')
-        editModal.querySelector('.modal-body #Name').value = button.getAttribute('data-bs-name')
+        editModal.querySelector('.modal-body #NameEditModal').value = button.getAttribute('data-bs-name')
         if (button.getAttribute('data-bs-description') != null) {
-            editModal.querySelector('.modal-body #Description').value = button.getAttribute('data-bs-description')
+            editModal.querySelector('.modal-body #DescriptionEditModal').value = button.getAttribute('data-bs-description')
         }
         if (button.getAttribute('data-bs-roomId') != null) {
-            editModal.querySelector('.modal-body #RoomId').value = button.getAttribute('data-bs-roomId')
+            editModal.querySelector('.modal-body #RoomIdEditModal').value = button.getAttribute('data-bs-roomId')
         }
         if (button.getAttribute('data-bs-bill') != null) {
-            editModal.querySelector('.modal-body #Bill').value = button.getAttribute('data-bs-bill')
+            editModal.querySelector('.modal-body #BillEditModal').value = button.getAttribute('data-bs-bill')
         }
         if (button.getAttribute('data-bs-totalBill') != null) {
-            editModal.querySelector('.modal-body #TotalBill').value = button.getAttribute('data-bs-totalBill')
+            editModal.querySelector('.modal-body #TotalBillEditModal').value = button.getAttribute('data-bs-totalBill')
         }
         if (button.getAttribute('data-bs-count') != null) {
-            editModal.querySelector('.modal-body #Count').value = button.getAttribute('data-bs-count')
+            editModal.querySelector('.modal-body #CountEditModal').value = button.getAttribute('data-bs-count')
         }
         if (button.getAttribute('data-bs-price') != null) {
-            editModal.querySelector('.modal-body #Price').value = button.getAttribute('data-bs-price')
+            editModal.querySelector('.modal-body #PriceEditModal').value = button.getAttribute('data-bs-price')
         }
-        editModal.querySelector('.modal-footer #Id').value = button.getAttribute('data-bs-id')
+        editModal.querySelector('.modal-footer #IdEditModal').value = button.getAttribute('data-bs-id')
     })
 }
 
