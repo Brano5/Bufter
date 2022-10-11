@@ -8,7 +8,7 @@
 	<div class="col-md-8 text-center p-4">
 		<div class="row">
 			<form class="d-flex" role="search" asp-controller="Manage" asp-action="ManageItemSearch" method="get">
-				<select class="form-select" id="RoomId" name="RoomId" style="width: 30%">
+				<select class="form-select w-30" id="RoomId" name="RoomId">
 					<!option value="-1" @(Context.Request.Query["RoomId"]=="-1"?"selected":"")>Every</!option>
 					@foreach (Room room in Model.Item1)
 					{
@@ -24,14 +24,14 @@
 			{
 				<div class="col-12 col-md-6 col-lg-4 col-xl-3 p-2">
 					<div class="card">
-						<div style="height: 8vw;">
+						<div class="h-8vw">
 							@if (@item.Image != "")
 							{
-								<img src="~/uploads/@item.Image" class="card-img-top" style="width:auto; height:auto; max-width:100%; max-height:100%">
+								<img src="~/uploads/@item.Image" class="card-img-top img-letter">
 							}
 							else
 							{
-								<p style="font-size: 5vw" class="mb-0">@item.Name[0]</p>
+								<p class="mb-0 fs-5vw">@item.Name[0]</p>
 							}
 						</div>
 						<div class="card-body">
@@ -56,7 +56,7 @@
 	</div>
 
 	<div class="col-md-4 p-4 mt-4">
-		<div class="btn-group-vertical" style="width: 100%">
+		<div class="btn-group-vertical w-100">
 			<a class="btn btn-primary" role="button" asp-controller="Manage" asp-action="ManageRoom">Room</a>
 			<a class="btn btn-primary" role="button" asp-controller="Manage" asp-action="ManagePerson">Person</a>
 			<a class="btn btn-primary active" role="button" asp-controller="Manage" asp-action="ManageItem">Item</a>

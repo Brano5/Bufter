@@ -49,6 +49,15 @@ if (addMoneyModal != null) {
 const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
 const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
 
+
+//Alert auto dismis
+const alertList = document.querySelectorAll('[class="alert-dismissible"]')
+const alertList2 = document.getElementsByClassName('alert-dismissible').each(function (i, obj) {
+    hide(obj.id);
+    alert("sad");
+});
+
+
 //Alert
 const alertPlaceholder = document.getElementById('alertPlaceholder')
 
