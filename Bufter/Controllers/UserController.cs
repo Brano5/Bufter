@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Xml.Linq;
 using System.Globalization;
+using Bufter.Helpers;
 
 namespace Bufter.Controllers
 {
@@ -45,7 +46,7 @@ namespace Bufter.Controllers
 
             User user = new User();
             user.Name = Name;
-            user.Password = Password;
+            user.Password = CustomHelper.HashPassword(Password, Name);
             user.Created = DateTime.Now;
             user.Updated = DateTime.Now;
             _db.Users.Add(user);
@@ -65,10 +66,6 @@ namespace Bufter.Controllers
                 //aM.addAlert("warning", "Wrong room name!");
                 return Index();
             }
-            if (Password == null || Password == "")
-            {
-                return Index();
-            }
 
             User? user = _db.Users.Find(Id);
             if (user == null)
@@ -76,7 +73,10 @@ namespace Bufter.Controllers
                 return Index();
             }
             user.Name = Name;
-            user.Password = Password;
+            if (Password != null && Password != "")
+            {
+                user.Password = CustomHelper.HashPassword(Password, user.Name);
+            }
             user.Updated = DateTime.Now;
             _db.Users.Update(user);
             _db.SaveChanges();

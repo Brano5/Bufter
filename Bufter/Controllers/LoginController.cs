@@ -12,6 +12,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components;
+using System.Security.Cryptography;
+using System.Text;
+using Bufter.Helpers;
 
 namespace Bufter.Controllers
 {
@@ -54,7 +57,7 @@ namespace Bufter.Controllers
                 return RedirectToAction("Index", "Login");
             }
 
-            User user = _db.Users.Where(a => a.Name == Name).Where(b => b.Password == Password).FirstOrDefault();
+            User user = _db.Users.Where(a => a.Name == Name).Where(b => b.Password == CustomHelper.HashPassword(Password, Name)).FirstOrDefault();
             if (user != null)
             {
                 var claims = new List<Claim>{ new Claim(ClaimTypes.Name, user.Name) };

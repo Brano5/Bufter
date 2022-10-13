@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Bufter.Helpers
 {
@@ -33,6 +35,17 @@ namespace Bufter.Helpers
         public static bool IsLogged(this IHtmlHelper htmlHelper)
         {
             return (htmlHelper.ViewContext.HttpContext.User.Identity != null && htmlHelper.ViewContext.HttpContext.User.Identity.Name != null);
+        }
+
+        public static string HashPassword(string password, string key)
+        {
+            // Convert the salted password to a byte array
+            byte[] saltedHashBytes = Encoding.UTF8.GetBytes(password + key);
+            // Use the hash algorithm to calculate the hash
+            HashAlgorithm algorithm = new SHA256Managed();
+            byte[] hash = algorithm.ComputeHash(saltedHashBytes);
+            // Return the hash as a base64 encoded string to be compared to the stored password
+            return Convert.ToBase64String(hash);
         }
     }
 }

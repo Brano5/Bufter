@@ -50,14 +50,6 @@ const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]
 const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
 
 
-//Alert auto dismis
-const alertList = document.querySelectorAll('[class="alert-dismissible"]')
-const alertList2 = document.getElementsByClassName('alert-dismissible').each(function (i, obj) {
-    hide(obj.id);
-    alert("sad");
-});
-
-
 //Alert
 const alertPlaceholder = document.getElementById('alertPlaceholder')
 
@@ -107,6 +99,14 @@ function hide(id) {
     }, 5000);
 }
 
+//Alert auto dismis
+//const alerts = document.getElementsByClassName('alert-dismissible')
+//if (alerts != null) {
+//    alerts.each(function (i, obj) {
+//        hide(obj.id);
+//    });
+//}
+
 
 //$('.changeActiveClass').click(function (e) {
 
@@ -119,23 +119,25 @@ function hide(id) {
 //});
 
 
+//Chart Plotly
+function chartPlotly(x, y) {
+    var xArray = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
+    var yArray = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
 
-var xArray = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
-var yArray = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
+    // Define Data
+    var data = [{
+        x: x,
+        y: y,
+        mode: "scatter"
+    }];
 
-// Define Data
-var data = [{
-    x: xArray,
-    y: yArray,
-    mode: "lines"
-}];
+    // Define Layout
+    var layout = {
+        xaxis: { autorange: true, title: "Dátum" },
+        yaxis: { autorange: true, title: "Počet" },
+        title: "Počet nákupov"
+    };
 
-// Define Layout
-var layout = {
-    xaxis: { range: [40, 160], title: "Square Meters" },
-    yaxis: { range: [5, 16], title: "Price in Millions" },
-    title: "House Prices vs Size"
-};
-
-// Display using Plotly
-Plotly.newPlot("myPlot", data, layout);
+    // Display using Plotly
+    Plotly.newPlot("myPlot", data, layout);
+}

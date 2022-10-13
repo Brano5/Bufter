@@ -1,9 +1,41 @@
 ﻿@using Bufter.Models
-@model Tuple<IEnumerable<BuyLog>, IEnumerable<Log>>
+@model IEnumerable<BuyLog>
 @{
 	ViewData["Title"] = "Chart";
 }
 
 <div>
-    <div id="myPlot" class="plot"></div>
+	<div id="myPlot" class="plot"></div>
 </div>
+
+@{
+	Dictionary<DateTime, int> dictionary = new Dictionary<DateTime, int>();
+
+	foreach(var item in Model){
+		var datum = item.Created.Date;
+		int hodnota = 0;
+		if (dictionary.ContainsKey(datum))
+		{
+			dictionary[datum]++;
+		} else {
+			dictionary.Add(datum, 1);
+		}
+	}
+	string x = "";
+	string y = "";
+	foreach(var item in dictionary){
+		if(x == "") {
+			x = item.Key.ToString();
+			y = item.Value.ToString();
+		} else {
+			x = x + ", " + item.Key;
+			y = y + ", " + item.Value;
+		}
+	}
+	<div>@dictionary.Keys.ToArray()</div>
+}
+<script type="text/javascript">
+	window.onload = function () {
+		chartPlotly(@dictionary.Keys.ToArray(), @dictionary.Values.ToArray());
+	};
+</script>

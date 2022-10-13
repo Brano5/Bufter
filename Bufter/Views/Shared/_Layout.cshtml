@@ -151,33 +151,32 @@
 
 		<div class="position-fixed bottom-0 end-0 alert-div">
 			<div id="alertPlaceholder"></div>
-
-			@if (@TempData["info"] != null)
+			@if (TempData["info"] != null)
 			{
-				var id = Guid.NewGuid();
-				<div class="alert alert-primary alert-dismissible d-flex align-items-center fade show" role="alert" id="@id">
-					<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill" /></svg>
-					<div>@TempData["info"]</div>
-					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-				</div>
+				<script type="text/javascript">
+					window.onload = function () {
+						var message = '@TempData["info"]';
+						alert(message, 'info');
+					};
+				</script>
 			}
-			@if (@TempData["success"] != null)
+			@if (TempData["success"] != null)
 			{
-				var id = Guid.NewGuid();
-				<div class="alert alert-success alert-dismissible d-flex align-items-center fade show" role="alert" id="@id">
-					<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill" /></svg>
-					<div>@TempData["success"]</div>
-					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-				</div>
+				<script type="text/javascript">
+					window.onload = function () {
+						var message = '@TempData["success"]';
+						alert(message, 'success');
+					};
+				</script>
 			}
-			@if (@TempData["warning"] != null)
+			@if (TempData["warning"] != null)
 			{
-				var id = Guid.NewGuid();
-				<div class="alert alert-warning alert-dismissible d-flex align-items-center fade show" role="alert" id="@id">
-					<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#exclamation-triangle-fill" /></svg>
-					<div>@TempData["warning"]</div>
-					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-				</div>
+				<script type="text/javascript">
+					window.onload = function () {
+						var message = '@TempData["warning"]';
+						alert(message, 'warning');
+					};
+				</script>
 			}
 		</div>
 	</div>
