@@ -151,29 +151,29 @@
 
 		<div class="position-fixed bottom-0 end-0 alert-div">
 			<div id="alertPlaceholder"></div>
-			@if (TempData["info"] != null)
+			@if (TempData["Info"] != null)
 			{
 				<script type="text/javascript">
 					window.onload = function () {
-						var message = '@TempData["info"]';
+						var message = '@TempData["Info"]';
 						alert(message, 'info');
 					};
 				</script>
 			}
-			@if (TempData["success"] != null)
+			@if (TempData["Success"] != null)
 			{
 				<script type="text/javascript">
 					window.onload = function () {
-						var message = '@TempData["success"]';
+						var message = '@TempData["Success"]';
 						alert(message, 'success');
 					};
 				</script>
 			}
-			@if (TempData["warning"] != null)
+			@if (TempData["Warning"] != null)
 			{
 				<script type="text/javascript">
 					window.onload = function () {
-						var message = '@TempData["warning"]';
+						var message = '@TempData["Warning"]';
 						alert(message, 'warning');
 					};
 				</script>

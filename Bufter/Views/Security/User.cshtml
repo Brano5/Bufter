@@ -1,132 +1,146 @@
 ﻿@using Bufter.Models
+@using Bufter.Helpers
 @model IEnumerable<User>
 @{
 	ViewData["Title"] = "Users";
 }
 
-<div class="row" id="log">
-	<div id="toolbar">
-		<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">Create</button>
-	</div>
-	<table class="table table-striped table-hover" data-toggle="table" data-toolbar="#toolbar" data-search="true" data-paggination="true" data-show-columns="true" data-pagination="true">
-		<thead>
-			<tr>
-				<th scope="col" data-sortable="true">Id</th>
-				<th scope="col" data-sortable="true">Name</th>
-				<th scope="col" data-sortable="true">Password</th>
-				<th scope="col" data-sortable="true">Created</th>
-				<th scope="col" data-sortable="true">Updated</th>
-				<th scope="col" data-sortable="false">Operate</th>
-			</tr>
-		</thead>
-		<tbody class="table-group-divider">
-			@foreach (User user in Model)
-			{
+@if (@Html.IsLogged())
+{
+	<div class="row" id="log">
+		<div id="toolbar">
+			<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">Create</button>
+		</div>
+		<table class="table table-striped table-hover" data-toggle="table" data-toolbar="#toolbar" data-search="true" data-paggination="true" data-show-columns="true" data-pagination="true">
+			<thead>
 				<tr>
-					<th scope="row">@user.Id</th>
-					<td>@user.Name</td>
-					<td>@user.Password</td>
-					<td>@user.Created</td>
-					<td>@user.Updated</td>
-					<td class="text-center">
-						<a class="mx-1" href="#editModal" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal" data-bs-id="@user.Id" data-bs-name="@user.Name" data-bs-password="@user.Password">
-							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-								<path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-								<path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
-							</svg>
-						</a>
-						<a class="mx-1" href="#deleteModal" title="Remove" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id="@user.Id" data-bs-name="@user.Name">
-							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-								<path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
-							</svg>
-						</a>
-					</td>
+					<th scope="col" data-sortable="true">Id</th>
+					<th scope="col" data-sortable="true">Name</th>
+					<th scope="col" data-sortable="true">Password</th>
+					<th scope="col" data-sortable="true">Created</th>
+					<th scope="col" data-sortable="true">Updated</th>
+					<th scope="col" data-sortable="false">Operate</th>
 				</tr>
-			}
-		</tbody>
-	</table>
-</div>
-
-<div class="modal fade" id="createModal" tabindex="-1" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form asp-controller="User" asp-action="Create" method="post">
-				<div class="modal-header">
-					<h5 class="modal-title">Create User</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<div class="row align-items-center">
-						<label for="Name" class="col-sm-3 col-form-label text-end">Name*</label>
-						<div class="col-sm-9">
-							<input class="form-control" type="text" id="Name" name="Name">
-						</div>
-					</div>
-					<div class="row align-items-center">
-						<label for="Password" class="col-sm-3 col-form-label text-end">Password*</label>
-						<div class="col-sm-9">
-							<input class="form-control" type="text" id="Password" name="Password">
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-primary">Create</button>
-				</div>
-			</form>
-		</div>
+			</thead>
+			<tbody class="table-group-divider">
+				@foreach (User user in Model)
+				{
+					<tr>
+						<th scope="row">@user.Id</th>
+						<td>@user.Name</td>
+						<td>@user.Password</td>
+						<td>@user.Created</td>
+						<td>@user.Updated</td>
+						<td class="text-center">
+							<a class="mx-1" href="#editModal" title="Edit" data-bs-toggle="modal" data-bs-target="#editModal" data-bs-id="@user.Id" data-bs-name="@user.Name" data-bs-password="@user.Password">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+									<path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+									<path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+								</svg>
+							</a>
+							<a class="mx-1" href="#deleteModal" title="Remove" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id="@user.Id" data-bs-name="@user.Name">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+									<path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z" />
+								</svg>
+							</a>
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
 	</div>
-</div>
 
-<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<form asp-controller="User" asp-action="Edit" method="post">
-				<div class="modal-header">
-					<h5 class="modal-title">Edit User</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<div class="row align-items-center">
-						<label for="Name" class="col-sm-3 col-form-label text-end">Name*</label>
-						<div class="col-sm-9">
-							<input class="form-control" type="text" id="Name" name="Name">
+	<div class="modal fade" id="createModal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form asp-controller="User" asp-action="Create" method="post">
+					<div class="modal-header">
+						<h5 class="modal-title">Create User</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="row align-items-center">
+							<label for="Name" class="col-sm-3 col-form-label text-end">Name*</label>
+							<div class="col-sm-9">
+								<input class="form-control" type="text" id="NameCreateModal" name="Name">
+							</div>
+						</div>
+						<div class="row align-items-center">
+							<label for="Password" class="col-sm-3 col-form-label text-end">Password*</label>
+							<div class="col-sm-9">
+								<input class="form-control" type="text" id="PasswordCreateModal" name="Password">
+							</div>
 						</div>
 					</div>
-					<div class="row align-items-center">
-						<label for="Password" class="col-sm-3 col-form-label text-end">Password*</label>
-						<div class="col-sm-9">
-							<input class="form-control" type="text" id="Password" name="Password">
-						</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary">Create</button>
 					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-					<input class="form-control" type="hidden" id="Id" Name="Id">
-					<button type="submit" class="btn btn-primary">Save</button>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Delete User</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
-				<p>Delete User?</p>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-				<form asp-controller="User" asp-action="Delete" method="post">
-					<input class="form-control" type="hidden" id="Id" Name="Id">
-					<button type="submit" class="btn btn-primary">Delete</button>
 				</form>
 			</div>
 		</div>
 	</div>
-</div>
+
+	<div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form asp-controller="User" asp-action="Edit" method="post">
+					<div class="modal-header">
+						<h5 class="modal-title">Edit User</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div class="row align-items-center">
+							<label for="Name" class="col-sm-3 col-form-label text-end">Name*</label>
+							<div class="col-sm-9">
+								<input class="form-control" type="text" id="NameEditModal" name="Name">
+							</div>
+						</div>
+						<div class="row align-items-center">
+							<label for="Password" class="col-sm-3 col-form-label text-end">Password*</label>
+							<div class="col-sm-9">
+								<input class="form-control" type="text" id="PasswordEditModal" name="Password">
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<input class="form-control" type="hidden" id="IdEditModal" Name="Id">
+						<button type="submit" class="btn btn-primary">Save</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Delete User</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p>Delete User?</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<form asp-controller="User" asp-action="Delete" method="post">
+						<input class="form-control" type="hidden" id="IdDeleteModal" Name="Id">
+						<button type="submit" class="btn btn-primary">Delete</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+else
+{
+	<div class="row justify-content-md-center text-center" id="log">
+		<div class="col-6">
+			<h1>You don't have permision for this action.</h1>
+			<h1>Please Log in</h1>
+			<a class="btn btn-primary" role="button" asp-controller="Login" asp-action="Index">Log in</a>
+		</div>
+	</div>
+}

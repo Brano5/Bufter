@@ -22,15 +22,13 @@ namespace Bufter.Controllers
     {
         private readonly ApplicationDBContext _db;
         private readonly IWebHostEnvironment env;
-        private readonly AlertManager aM;
         private readonly LogManager _logManager;
         private readonly NavigationManager navM;
 
-        public LoginController(ApplicationDBContext db, IWebHostEnvironment environment, AlertManager alertManager, LogManager logManager)
+        public LoginController(ApplicationDBContext db, IWebHostEnvironment environment, LogManager logManager)
         {
             _db = db;
             env = environment;
-            aM = alertManager;
             _logManager = logManager;
         }
 
@@ -74,14 +72,14 @@ namespace Bufter.Controllers
 
                 _logManager.addLog("INFO", "Login User " + Name + " by " + Request.Cookies["Person"], HttpContext);
 
-                @TempData["Info"] = "User legged in";
+                @TempData["Info"] = "User successfuly logged in!";
                 //aM.addAlert("success", "Room updated successfully!");
                 return RedirectToAction("Index", "User");
             }
 
             _logManager.addLog("INFO", "Login User Failed " + Name + " by " + Request.Cookies["Person"], HttpContext);
 
-            aM.addAlert("success", "Room updated successfully!");
+            @TempData["Warning"] = "User was not logged in!";
             return RedirectToAction("Index", "Login");
         }
 

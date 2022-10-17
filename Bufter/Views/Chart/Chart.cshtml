@@ -1,41 +1,61 @@
 ﻿@using Bufter.Models
+@using Bufter.Helpers
+@using System.Web;
 @model IEnumerable<BuyLog>
 @{
 	ViewData["Title"] = "Chart";
 }
 
-<div>
-	<div id="myPlot" class="plot"></div>
-</div>
+@if (@Html.IsLogged())
+{
+	<div>
+		<div id="myPlot" class="plot"></div>
+	</div>
 
-@{
+
 	Dictionary<DateTime, int> dictionary = new Dictionary<DateTime, int>();
 
-	foreach(var item in Model){
+	foreach (var item in Model)
+	{
 		var datum = item.Created.Date;
 		int hodnota = 0;
 		if (dictionary.ContainsKey(datum))
 		{
 			dictionary[datum]++;
-		} else {
+		}
+		else
+		{
 			dictionary.Add(datum, 1);
 		}
 	}
-	string x = "";
-	string y = "";
-	foreach(var item in dictionary){
-		if(x == "") {
-			x = item.Key.ToString();
-			y = item.Value.ToString();
-		} else {
-			x = x + ", " + item.Key;
-			y = y + ", " + item.Value;
+	var x = "";
+	string y = "[" + string.Join(", ", dictionary.Values) + "]";
+	foreach (var item in dictionary)
+	{
+		if (x == "")
+		{
+			x = "[\"" + item.Key.ToString() + "\"";
+		}
+		else
+		{
+			x = x + ", \"" + item.Key + "\"";
 		}
 	}
-	<div>@dictionary.Keys.ToArray()</div>
+	x = x + "]";
+
+	<script type="text/javascript">
+		window.onload = function () {
+			chartPlotly(@Html.Raw(x), @y);
+		};
+	</script>
 }
-<script type="text/javascript">
-	window.onload = function () {
-		chartPlotly(@dictionary.Keys.ToArray(), @dictionary.Values.ToArray());
-	};
-</script>
+else
+{
+	<div class="row justify-content-md-center text-center" id="log">
+		<div class="col-6">
+			<h1>You don't have permision for this action.</h1>
+			<h1>Please Log in</h1>
+			<a class="btn btn-primary" role="button" asp-controller="Login" asp-action="Index">Log in</a>
+		</div>
+	</div>
+}
