@@ -21,14 +21,11 @@ namespace Bufter.Controllers
     public class LoginController : Controller
     {
         private readonly ApplicationDBContext _db;
-        private readonly IWebHostEnvironment env;
         private readonly LogManager _logManager;
-        private readonly NavigationManager navM;
 
-        public LoginController(ApplicationDBContext db, IWebHostEnvironment environment, LogManager logManager)
+        public LoginController(ApplicationDBContext db, LogManager logManager)
         {
             _db = db;
-            env = environment;
             _logManager = logManager;
         }
 
@@ -45,13 +42,10 @@ namespace Bufter.Controllers
         [HttpPost]
         public IActionResult Login(string Name, string Password)
         {
-            if (Name == null || Name == "" || _db.Rooms.Where(a => a.Name == Name).Count() > 1)
+            if (Name == null || Name == "" || Password == null ||Password == "")
             {
-                //aM.addAlert("warning", "Wrong room name!");
-                return RedirectToAction("Index", "Login");
-            }
-            if (Password == null || Password == "")
-            {
+                @TempData["Warning"] = "Wrong credintials!";
+
                 return RedirectToAction("Index", "Login");
             }
 
@@ -71,15 +65,14 @@ namespace Bufter.Controllers
                     authProperties);
 
                 _logManager.addLog("INFO", "Login User " + Name + " by " + Request.Cookies["Person"], HttpContext);
-
                 @TempData["Info"] = "User successfuly logged in!";
-                //aM.addAlert("success", "Room updated successfully!");
+
                 return RedirectToAction("Index", "User");
             }
 
             _logManager.addLog("INFO", "Login User Failed " + Name + " by " + Request.Cookies["Person"], HttpContext);
-
             @TempData["Warning"] = "User was not logged in!";
+
             return RedirectToAction("Index", "Login");
         }
 
@@ -88,7 +81,6 @@ namespace Bufter.Controllers
             HttpContext.SignOutAsync();
 
             _logManager.addLog("INFO", "LogOut User", HttpContext);
-
             @TempData["Info"] = "Succesfull LogOut.";
 
             return RedirectToAction("Index", "Login");

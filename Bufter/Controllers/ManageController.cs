@@ -14,14 +14,12 @@ namespace Bufter.Controllers
 	{
         private readonly ApplicationDBContext _db;
         private readonly IWebHostEnvironment env;
-        private readonly AlertManager aM;
         private readonly LogManager _logManager;
 
-        public ManageController(ApplicationDBContext db, IWebHostEnvironment environment, AlertManager alertManager, LogManager logManager)
+        public ManageController(ApplicationDBContext db, IWebHostEnvironment environment, LogManager logManager)
 		{
 			_db = db;
             env = environment;
-            aM = alertManager;
             _logManager = logManager;
         }
 
@@ -80,7 +78,8 @@ namespace Bufter.Controllers
         {
             if (Name == null || Name == "" || _db.Rooms.Where(a => a.Name == Name).Count() != 0)
             {
-                //aM.addAlert("warning", "Wrong room name!");
+                @TempData["Warning"] = "Wrong name!";
+                
                 return ManageRoom();
             }
             if (Description == null)
@@ -107,8 +106,8 @@ namespace Bufter.Controllers
             _db.SaveChanges();
 
             _logManager.addLog("INFO", "Created Room " + Name + " by " + Request.Cookies["Person"], HttpContext);
-
-            //aM.addAlert("success", "Room created successfully!");
+            @TempData["Info"] = "Successfully created!";
+            
             return ManageRoom();
         }
 
@@ -117,7 +116,8 @@ namespace Bufter.Controllers
         {
             if (Name == null || Name == "" || _db.Rooms.Where(a => a.Name == Name).Count() > 1)
             {
-                //aM.addAlert("warning", "Wrong room name!");
+                @TempData["Warning"] = "Wrong name!";
+
                 return ManageRoom();
             }
             if (Description == null)
@@ -143,8 +143,8 @@ namespace Bufter.Controllers
             _db.SaveChanges();
 
             _logManager.addLog("INFO", "Edited Room " + Name + " by " + Request.Cookies["Person"], HttpContext);
-
-            //aM.addAlert("success", "Room updated successfully!");
+            @TempData["Info"] = "Successfully edited!";
+            
             return ManageRoom();
         }
 
@@ -155,8 +155,8 @@ namespace Bufter.Controllers
             _db.SaveChanges();
 
             _logManager.addLog("INFO", "Deleted Room " + Id + " by " + Request.Cookies["Person"], HttpContext);
-
-            //aM.addAlert("success", "Room created successfully!");
+            @TempData["Info"] = "Successfully deleted!";
+            
             return ManageRoom();
         }
 
@@ -165,7 +165,8 @@ namespace Bufter.Controllers
         {
             if (Name == null || Name == "" || _db.Persons.Where(a => a.Name == Name).Count() != 0)
             {
-                //aM.addAlert("warning", "Wrong room name!");
+                @TempData["Warning"] = "Wrong name!";
+
                 return ManagePerson();
             }
 
@@ -192,8 +193,8 @@ namespace Bufter.Controllers
             _db.SaveChanges();
 
             _logManager.addLog("INFO", "Created Person " + Name + " by " + Request.Cookies["Person"], HttpContext);
-
-            //aM.addAlert("success", "Room created successfully!");
+            @TempData["Info"] = "Successfully created!";
+            
             return ManagePerson();
         }
 
@@ -202,7 +203,8 @@ namespace Bufter.Controllers
         {
             if (Name == null || Name == "" || _db.Persons.Where(a => a.Name == Name).Count() > 1)
             {
-                //aM.addAlert("warning", "Wrong room name!");
+                @TempData["Warning"] = "Wrong name!";
+
                 return ManagePerson();
             }
             if (Bill == null)
@@ -232,8 +234,8 @@ namespace Bufter.Controllers
             _db.SaveChanges();
 
             _logManager.addLog("INFO", "Edited Person " + Name + " by " + Request.Cookies["Person"], HttpContext);
-
-            //aM.addAlert("success", "Room updated successfully!");
+            @TempData["Info"] = "Successfully edited!";
+            
             return ManagePerson();
         }
 
@@ -244,8 +246,8 @@ namespace Bufter.Controllers
             _db.SaveChanges();
 
             _logManager.addLog("INFO", "Deleted Person " + Id + " by " + Request.Cookies["Person"], HttpContext);
-
-            //aM.addAlert("success", "Room created successfully!");
+            @TempData["Info"] = "Successfully deleted!";
+            
             return ManagePerson();
         }
 
@@ -254,7 +256,8 @@ namespace Bufter.Controllers
         {
             if (Name == null || Name == "" || _db.Persons.Where(a => a.Name == Name).Count() != 0)
             {
-                //aM.addAlert("warning", "Wrong room name!");
+                @TempData["Warning"] = "Wrong name!";
+
                 return ManageItem();
             }
             if (Description == null)
@@ -286,8 +289,8 @@ namespace Bufter.Controllers
             _db.SaveChanges();
 
             _logManager.addLog("INFO", "Created Item " + Name + " by " + Request.Cookies["Person"], HttpContext);
-
-            //aM.addAlert("success", "Room created successfully!");
+            @TempData["Info"] = "Successfully created!";
+            
             return ManageItem();
         }
 
@@ -296,7 +299,8 @@ namespace Bufter.Controllers
         {
             if (Name == null || Name == "" || _db.Persons.Where(a => a.Name == Name).Count() > 1)
             {
-                //aM.addAlert("warning", "Wrong room name!");
+                @TempData["Warning"] = "Wrong name!";
+
                 return ManageItem();
             }
             if (Description == null)
@@ -327,8 +331,8 @@ namespace Bufter.Controllers
             _db.SaveChanges();
 
             _logManager.addLog("INFO", "Edited Item " + Name + " by " + Request.Cookies["Person"], HttpContext);
-
-            //aM.addAlert("success", "Room updated successfully!");
+            @TempData["Info"] = "Successfully edited!";
+            
             return ManageItem();
         }
 
@@ -339,8 +343,8 @@ namespace Bufter.Controllers
             _db.SaveChanges();
 
             _logManager.addLog("INFO", "Deleted Item " + Id + " by " + Request.Cookies["Person"], HttpContext);
-
-            //aM.addAlert("success", "Room created successfully!");
+            @TempData["Info"] = "Successfully deleted!";
+            
             return ManageItem();
         }
 
@@ -361,8 +365,9 @@ namespace Bufter.Controllers
             }
             _db.Persons.Update(personDb);
             _db.SaveChanges();
-
+            
             _logManager.addLog("INFO", "Add Money " + person + " amount " + amount + " by " + Request.Cookies["Person"], HttpContext);
+            @TempData["Info"] = "Successfully added money!";
 
             return ManagePerson();
         }

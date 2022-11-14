@@ -10,8 +10,9 @@ namespace Bufter.Controllers
 	public class SettingsController : Controller
 	{
         private readonly ApplicationDBContext _db;
+        private readonly LogManager _logManager;
 
-        public SettingsController(ApplicationDBContext db)
+        public SettingsController(ApplicationDBContext db, LogManager logManager)
         {
             _db = db;
         }
@@ -50,6 +51,10 @@ namespace Bufter.Controllers
             {
                 Response.Cookies.Delete("Person");
             }
+
+            _logManager.addLog("INFO", "Save settings", HttpContext);
+            @TempData["Info"] = "Succesfull Save settings!";
+
             return View("Settings", settings);
         }
 
@@ -70,6 +75,9 @@ namespace Bufter.Controllers
             }
             _db.Persons.Update(personDb);
             _db.SaveChanges();
+
+            _logManager.addLog("INFO", "Add money", HttpContext);
+            @TempData["Info"] = "Succesfull Added money!";
 
             return Index();
         }

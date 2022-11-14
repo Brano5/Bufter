@@ -11,13 +11,11 @@ namespace Bufter.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDBContext _db;
         private readonly LogManager _logManager;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDBContext db, LogManager logManager)
+        public HomeController(ApplicationDBContext db, LogManager logManager)
         {
-            _logger = logger;
             _db = db;
             _logManager = logManager;
         }
@@ -174,6 +172,7 @@ namespace Bufter.Controllers
             _db.SaveChanges();
 
             _logManager.addBuyLog(room, person, item, "Buy item", HttpContext);
+            @TempData["Info"] = "Succesfull Buy item!";
 
             //return Person(room);
             return Index();
@@ -198,6 +197,9 @@ namespace Bufter.Controllers
             }
             _db.Persons.Update(personDb);
             _db.SaveChanges();
+
+            _logManager.addLog("INFO", "Add money", HttpContext);
+            @TempData["Info"] = "Succesfull Added money!";
 
             return Item(room, person);
         }

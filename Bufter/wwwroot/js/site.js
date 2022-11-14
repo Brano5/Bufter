@@ -93,6 +93,7 @@ function alert(message, type) {
     hide(id);
 }
 
+//Auto close alert
 function hide(id) {
     setTimeout(function () {
         $('#' + id).alert('close');
@@ -119,22 +120,22 @@ function hide(id) {
 //});
 
 
-//Chart Plotly
+//Graf Plotly
 function chartPlotly(x, y) {
-    // Define Data
+    //Data
     var data = [{
         x: x,
         y: y,
         type: 'scatter'
     }];
 
-    // Define Layout
+    //Layout
     var layout = {
         xaxis: { autorange: true, title: "Dátum" },
         yaxis: { autorange: true, title: "Počet" },
         title: "Počet nákupov"
     };
 
-    // Display using Plotly
+    //Display Plotly
     Plotly.newPlot("myPlot", data, layout);
 }
