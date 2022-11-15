@@ -1,5 +1,4 @@
 ﻿@using Bufter.Models
-@model Login
 @{
     ViewData["Title"] = "Login";
 }
@@ -7,17 +6,17 @@
 <div class="row justify-content-md-center">
 	<div class="col-md-4 mt-4">
 		<h2 class="text-center text-primary">Login</h2>
-		<form asp-controller="Login" asp-action="Login" method="post">
+		<form asp-controller="Login" asp-action="Login" name="myForm" method="post" onsubmit="return validateForm()">
 			<div class="row align-items-center">
 				<label for="Name" class="col-sm-3 col-form-label text-end">Name*</label>
 				<div class="col-sm-9">
-					<input class="form-control" type="text" id="Name" name="Name">
+					<input class="form-control" type="text" id="Name" name="Name" required>
 				</div>
 			</div>
 			<div class="row align-items-center">
 				<label for="Password" class="col-sm-3 col-form-label text-end">Password*</label>
 				<div class="col-sm-9">
-					<input class="form-control" type="password" id="Password" name="Password">
+					<input class="form-control" type="password" id="Password" name="Password" required>
 				</div>
 			</div>
 			<div class="row justify-content-md-center">
@@ -28,3 +27,19 @@
 </div>
 
 <button class="btn btn-primary" onclick="alert('sd', 'info')">Click</button>
+
+<script>
+	function validateForm() {
+		let name = document.forms["myForm"]["Name"].value.trim();
+		if (name == "") {
+			alert("Name must be filled out", "warning");
+			return false;
+		}
+		let password = document.forms["myForm"]["Password"].value.trim();
+		if (password == "") {
+			alert("Password must be filled out", "warning");
+			return false;
+		}
+		return true;
+	}
+</script>

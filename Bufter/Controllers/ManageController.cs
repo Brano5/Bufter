@@ -216,10 +216,20 @@ namespace Bufter.Controllers
 
                 return ManagePerson();
             }
-            if (Bill == null)
-                Bill = "0";
-            if (TotalBill == null)
-                TotalBill = "0";
+            if(Bill == null || Bill == "" || TotalBill == null || TotalBill == null)
+            {
+                @TempData["Warning"] = "Wrong values!";
+
+                return ManagePerson();
+            }
+            var bill = Math.Round(double.Parse(Bill, CultureInfo.InvariantCulture.NumberFormat), 2);
+            var totalBill = Math.Round(double.Parse(TotalBill, CultureInfo.InvariantCulture.NumberFormat), 2);
+            if (bill < -9999 || bill > 9999 || totalBill < -9999 || totalBill > 9999)
+            {
+                @TempData["Warning"] = "Wrong values!";
+
+                return ManagePerson();
+            }
 
             Person? person = _db.Persons.Find(Id);
             if(person == null)
@@ -236,8 +246,8 @@ namespace Bufter.Controllers
                 Image.CopyTo(new FileStream(filePath, FileMode.Create));
                 person.Image = uniqueFileName;
             }
-            person.Bill = Math.Round(double.Parse(Bill, CultureInfo.InvariantCulture.NumberFormat), 2);
-            person.TotalBill = Math.Round(double.Parse(TotalBill, CultureInfo.InvariantCulture.NumberFormat), 2);
+            person.Bill = bill;
+            person.TotalBill = totalBill;
             person.Updated = DateTime.Now;
             _db.Persons.Update(person);
             _db.SaveChanges();
@@ -275,10 +285,25 @@ namespace Bufter.Controllers
 
                 return ManageItem();
             }
+            if (Price == null || Price == "")
+            {
+                @TempData["Warning"] = "Wrong price!";
+                return ManageItem();
+            }
+            var pr = Math.Round(double.Parse(Price, CultureInfo.InvariantCulture.NumberFormat), 2);
+            if (pr < 0 || pr > 9999)
+            {
+                @TempData["Warning"] = "Wrong price!";
+                return ManageItem();
+            }
+            if (Count < -9999 || Count > 9999)
+            {
+                @TempData["Warning"] = "Wrong count!";
+                return ManageItem();
+            }
+
             if (Description == null)
                 Description = "";
-            if (Price == null)
-                Price = "0";
 
             Item item = new Item();
             item.Name = Name;
@@ -297,7 +322,7 @@ namespace Bufter.Controllers
                 item.Image = "";
             }
             item.Count = Count;
-            item.Price = Math.Round(double.Parse(Price, CultureInfo.InvariantCulture.NumberFormat), 2);
+            item.Price = pr;
             item.Created = DateTime.Now;
             item.Updated = DateTime.Now;
             _db.Items.Add(item);
@@ -318,10 +343,25 @@ namespace Bufter.Controllers
 
                 return ManageItem();
             }
+            if (Price == null || Price == "")
+            {
+                @TempData["Warning"] = "Wrong price!";
+                return ManageItem();
+            }
+            var pr = Math.Round(double.Parse(Price, CultureInfo.InvariantCulture.NumberFormat), 2);
+            if (pr < 0 || pr > 9999)
+            {
+                @TempData["Warning"] = "Wrong price!";
+                return ManageItem();
+            }
+            if (Count < -9999 || Count > 9999)
+            {
+                @TempData["Warning"] = "Wrong count!";
+                return ManageItem();
+            }
+
             if (Description == null)
                 Description = "";
-            if (Price == null)
-                Price = "0";
 
             Item? item = _db.Items.Find(Id);
             if (item == null)
@@ -340,7 +380,7 @@ namespace Bufter.Controllers
                 item.Image = uniqueFileName;
             }
             item.Count = Count;
-            item.Price = Math.Round(double.Parse(Price, CultureInfo.InvariantCulture.NumberFormat), 2);
+            item.Price = pr;
             item.Updated = DateTime.Now;
             _db.Items.Update(item);
             _db.SaveChanges();

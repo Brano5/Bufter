@@ -78,7 +78,7 @@
 					<div class="row align-items-center">
 						<label for="NameCreateModal" class="col-sm-3 col-form-label text-end">Name*</label>
 						<div class="col-sm-9">
-							<input class="form-control" type="text" id="NameCreateModal" name="Name">
+							<input class="form-control" type="text" id="NameCreateModal" name="Name" required>
 						</div>
 					</div>
 					<div class="row align-items-center">
@@ -90,7 +90,7 @@
 					<div class="row align-items-center">
 						<label for="RoomIdCreateModal" class="col-sm-3 col-form-label text-end">Room</label>
 						<div class="col-sm-9">
-							<select class="form-select" id="RoomIdCreateModal" name="RoomId" aria-label="Default select example">
+							<select class="form-select" id="RoomIdCreateModal" name="RoomId" aria-label="Default select example" required>
 								<option value="-1">Every</option>
 								@foreach (Room room in Model.Item1)
 								{
@@ -102,13 +102,13 @@
 					<div class="row align-items-center">
 						<label for="CountCreateModal" class="col-sm-3 col-form-label text-end">Count</label>
 						<div class="col-sm-9">
-							<input class="form-control" type="number" id="CountCreateModal" name="Count">
+							<input class="form-control" type="number" id="CountCreateModal" name="Count" min="-9999" max="9999">
 						</div>
 					</div>
 					<div class="row align-items-center">
-						<label for="PriceCreateModal" class="col-sm-3 col-form-label text-end">Price</label>
+						<label for="PriceCreateModal" class="col-sm-3 col-form-label text-end">Price*</label>
 						<div class="col-sm-9">
-							<input class="form-control" type="number" step="0.01" id="PriceCreateModal" name="Price">
+							<input class="form-control" type="number" step="0.01" id="PriceCreateModal" name="Price" min="0" max="9999" required>
 						</div>
 					</div>
 					<div class="row align-items-center">
@@ -139,7 +139,7 @@
 					<div class="row align-items-center">
 						<label for="NameEditModal" class="col-sm-3 col-form-label text-end">Name*</label>
 						<div class="col-sm-9">
-							<input class="form-control" type="text" id="NameEditModal" name="Name">
+							<input class="form-control" type="text" id="NameEditModal" name="Name" required>
 						</div>
 					</div>
 					<div class="row align-items-center">
@@ -151,7 +151,7 @@
 					<div class="row align-items-center">
 						<label for="RoomIdEditModal" class="col-sm-3 col-form-label text-end">Room</label>
 						<div class="col-sm-9">
-							<select class="form-select" id="RoomIdEditModal" name="RoomId" aria-label="Default select example">
+							<select class="form-select" id="RoomIdEditModal" name="RoomId" aria-label="Default select example" required>
 								<option value="-1">Every</option>
 								@foreach (Room room in Model.Item1)
 								{
@@ -163,13 +163,13 @@
 					<div class="row align-items-center">
 						<label for="CountEditModal" class="col-sm-3 col-form-label text-end">Count</label>
 						<div class="col-sm-9">
-							<input class="form-control" type="number" id="CountEditModal" name="Count">
+							<input class="form-control" type="number" id="CountEditModal" name="Count" min="-9999" max="9999">
 						</div>
 					</div>
 					<div class="row align-items-center">
-						<label for="PriceEditModal" class="col-sm-3 col-form-label text-end">Price</label>
+						<label for="PriceEditModal" class="col-sm-3 col-form-label text-end">Price*</label>
 						<div class="col-sm-9">
-							<input class="form-control" type="number" step="0.01" id="PriceEditModal" name="Price">
+							<input class="form-control" type="number" step="0.01" id="PriceEditModal" name="Price" min="0" max="9999" required>
 						</div>
 					</div>
 					<div class="row align-items-center">
