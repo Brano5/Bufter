@@ -2,6 +2,6 @@
 
 Simple Buffet Counter for MTS.
 
-https://member5.smarterasp.net/
+https://freeasphosting.net/
 
-http://nikto5-001-site1.btempurl.com/
+https://Brano.bsite.net/

@@ -1,5 +1,4 @@
 ﻿using Bufter.Data;
-using Bufter.Model;
 using Bufter.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +40,8 @@ namespace Bufter.Controllers
         [HttpGet]
         public IActionResult ManagePersonSearch(int RoomId, string Search)
         {
+            if (Search == null || Search == "")
+                return ManagePerson();
             IEnumerable<Person>? persons = null;
             if(RoomId == -1 && Search == null)
                 return ManagePerson();
@@ -61,6 +62,8 @@ namespace Bufter.Controllers
         [HttpGet]
         public IActionResult ManageItemSearch(int RoomId, string Search)
         {
+            if (Search == null || Search == "")
+                return ManageItem();
             IEnumerable<Item>? items = null;
             if (RoomId == -1 && Search == null)
                 return ManageItem();
@@ -151,7 +154,13 @@ namespace Bufter.Controllers
         [HttpPost]
         public IActionResult DeleteRoom(int Id)
         {
-            _db.Rooms.Remove(_db.Rooms.Find(Id));
+            var room = _db.Rooms.Find(Id);
+            if(room == null)
+            {
+                @TempData["Warning"] = "Failed deleted!";
+                return ManageRoom();
+            }
+            _db.Rooms.Remove(room);
             _db.SaveChanges();
 
             _logManager.addLog("INFO", "Deleted Room " + Id + " by " + Request.Cookies["Person"], HttpContext);
@@ -242,7 +251,13 @@ namespace Bufter.Controllers
         [HttpPost]
         public IActionResult DeletePerson(int Id)
         {
-            _db.Persons.Remove(_db.Persons.Find(Id));
+            var person = _db.Persons.Find(Id);
+            if (person == null)
+            {
+                @TempData["Warning"] = "Failed deleted!";
+                return ManagePerson();
+            }
+            _db.Persons.Remove(person);
             _db.SaveChanges();
 
             _logManager.addLog("INFO", "Deleted Person " + Id + " by " + Request.Cookies["Person"], HttpContext);
@@ -339,7 +354,14 @@ namespace Bufter.Controllers
         [HttpPost]
         public IActionResult DeleteItem(int Id)
         {
-            _db.Items.Remove(_db.Items.Find(Id));
+            var item = _db.Items.Find(Id);
+            if(item == null)
+            {
+                @TempData["Warning"] = "Failed deleted!";
+                return ManageItem();
+            }
+
+            _db.Items.Remove(item);
             _db.SaveChanges();
 
             _logManager.addLog("INFO", "Deleted Item " + Id + " by " + Request.Cookies["Person"], HttpContext);
@@ -350,6 +372,12 @@ namespace Bufter.Controllers
 
         public IActionResult AddMoney(string person, string amount)
         {
+            if(person == null || person == "" || amount == null || amount == "")
+            {
+                @TempData["Waring"] = "Failed added money!";
+
+                return ManagePerson();
+            }
             Person? personDb = _db.Persons.Where(a => a.Name == person).FirstOrDefault();
             if (personDb == null)
             {

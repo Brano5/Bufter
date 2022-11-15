@@ -1,5 +1,4 @@
 ﻿using Bufter.Data;
-using Bufter.Model;
 using Bufter.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -136,15 +135,15 @@ namespace Bufter.Controllers
 
         public IActionResult Order(string room, string person, string item)
         {
-            if (room == null)
+            if (room == null || room == "")
             {
                 return Room();
             }
-            if (person == null)
+            if (person == null || person == "")
             {
                 return Person(room);
             }
-            if (item == null)
+            if (item == null || item == "")
             {
                 return Item(room, person);
             }
@@ -182,6 +181,8 @@ namespace Bufter.Controllers
 
         public IActionResult AddMoney(string room, string person, string amount)
         {
+            if(room == null || person == null || amount == null || room == "" || person == "" || amount == "")
+                return Index();
             Person? personDb = _db.Persons.Where(a => a.Name == person).FirstOrDefault();
             if (personDb == null)
             {

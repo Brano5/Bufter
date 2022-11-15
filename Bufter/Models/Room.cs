@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Bufter.Model
+namespace Bufter.Models
 {
     public class Room
     {

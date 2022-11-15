@@ -1,5 +1,4 @@
-﻿using Bufter.Model;
-
+﻿
 namespace Bufter.Models
 {
 	public class Settings

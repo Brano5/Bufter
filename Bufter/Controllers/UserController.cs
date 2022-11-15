@@ -1,5 +1,4 @@
 ﻿using Bufter.Data;
-using Bufter.Model;
 using Bufter.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -63,6 +62,10 @@ namespace Bufter.Controllers
                 @TempData["Warning"] = "Wrong name!";
                 return Index();
             }
+            if (Password == null || Password == "")
+            {
+                return Index();
+            }
 
             User? user = _db.Users.Find(Id);
             if (user == null)
@@ -70,10 +73,7 @@ namespace Bufter.Controllers
                 return Index();
             }
             user.Name = Name;
-            if (Password != null && Password != "")
-            {
-                user.Password = CustomHelper.HashPassword(Password, user.Name);
-            }
+            user.Password = CustomHelper.HashPassword(Password, user.Name);
             user.Updated = DateTime.Now;
             _db.Users.Update(user);
             _db.SaveChanges();

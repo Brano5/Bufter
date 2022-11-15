@@ -1,5 +1,4 @@
 ﻿using Bufter.Data;
-using Bufter.Model;
 using Bufter.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,6 +14,7 @@ namespace Bufter.Controllers
         public SettingsController(ApplicationDBContext db, LogManager logManager)
         {
             _db = db;
+            _logManager = logManager;
         }
 
         public IActionResult Index()
@@ -26,7 +26,11 @@ namespace Bufter.Controllers
             settings.SavePerson = Request.Cookies["SavePerson"] == "True" ? true : false;
             settings.Room = Request.Cookies["Room"];
             settings.Person = Request.Cookies["Person"];
-            settings.Bill = _db.Persons.Where(a => a.Name == settings.Person).FirstOrDefault().Bill;
+            var person = _db.Persons.Where(a => a.Name == settings.Person).FirstOrDefault();
+            if(person != null)
+            {
+                settings.Bill = person.Bill;
+            }
             return View("Settings", settings);
 		}
 
@@ -60,6 +64,12 @@ namespace Bufter.Controllers
 
         public IActionResult AddMoney(string person, string amount)
         {
+            if (person == null || person == "" || amount == null || amount == "")
+            {
+                @TempData["Waring"] = "Failed added money!";
+
+                return Index();
+            }
             Person? personDb = _db.Persons.Where(a => a.Name == person).FirstOrDefault();
             if(personDb == null)
             {

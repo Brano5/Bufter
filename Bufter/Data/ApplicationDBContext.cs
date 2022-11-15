@@ -1,4 +1,4 @@
-﻿using Bufter.Model;
+﻿
 using Bufter.Models;
 using Microsoft.EntityFrameworkCore;
 
