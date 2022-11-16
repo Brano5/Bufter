@@ -42,6 +42,12 @@
 						<li class="nav-item text-center">
 							<a class="nav-link @Html.IsSelected(controller: "Settings")" asp-area="" asp-controller="Settings" asp-action="Index">Settings</a>
 						</li>
+						@if (!@Html.IsLogged())
+						{
+							<li class="nav-item text-center">
+								<a class="nav-link @Html.IsSelected(controller: "Login")" asp-area="" asp-controller="Login" asp-action="Index">Login</a>
+							</li>
+						}
 					</ul>
 				</div>
 			</div>

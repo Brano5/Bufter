@@ -56,7 +56,7 @@
 <div class="modal fade" id="createModal" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form asp-controller="Manage" asp-action="CreateRoom" method="post" enctype="multipart/form-data">
+			<form asp-controller="Manage" asp-action="CreateRoom" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
 				<div class="modal-header">
 					<h5 class="modal-title">Create Room</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -66,6 +66,9 @@
 						<label for="NameCreateModal" class="col-sm-3 col-form-label text-end">Name*</label>
 						<div class="col-sm-9">
 							<input class="form-control" type="text" id="NameCreateModal" name="Name" required>
+							<div class="invalid-feedback">
+								Please provide a valid name.
+							</div>
 						</div>
 					</div>
 					<div class="row align-items-center">
@@ -93,7 +96,7 @@
 <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form asp-controller="Manage" asp-action="EditRoom" method="post" enctype="multipart/form-data">
+			<form asp-controller="Manage" asp-action="EditRoom" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
 				<div class="modal-header">
 					<h5 class="modal-title">Edit Room</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -103,6 +106,9 @@
 						<label for="NameEditModal" class="col-sm-3 col-form-label text-end">Name*</label>
 						<div class="col-sm-9">
 							<input class="form-control" type="text" id="NameEditModal" name="Name" required>
+							<div class="invalid-feedback">
+								Please provide a valid name.
+							</div>
 						</div>
 					</div>
 					<div class="row align-items-center">

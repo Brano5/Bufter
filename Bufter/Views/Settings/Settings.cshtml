@@ -28,17 +28,15 @@
 			<label asp-for="Person" class="col-4 col-md-2 col-form-label text-end">Person</label>
 			<div class="col-8 col-md-8">
 				<input type="text" class="form-control" asp-for="Person">
-			</div>
-			@if (Model.Person != null && Model.Person != "")
-			{
-				<div class="col-12 col-md-2">
+				@if (Model.Person != null && Model.Person != "")
+				{
 					<div class="row">
 						<p class="col-auto my-auto"><b>Bill: @Model.Bill€</b></p>
 						<a class="col-auto btn btn-primary btn mx-1" asp-controller="Settings" asp-action="AddMoney" asp-route-Person="@Model.Person" asp-route-Amount="0">Clear bill</a>
 						<a class="col-auto btn btn-primary btn mx-1" data-bs-toggle="modal" data-bs-target="#addMoneyModal" data-bs-name="@Model.Person">Add money</a>
-						</div>
-				</div>
-			}
+					</div>
+				}
+			</div>
 		</div>
 		<div class="row">
 			<button type="submit" class="btn btn-primary mx-auto col-2">Save</button>
