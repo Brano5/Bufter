@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Xml.Linq;
 using System.Globalization;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bufter.Controllers
 {
@@ -53,6 +54,26 @@ namespace Bufter.Controllers
                 persons = _db.Persons.Where(a => (a.RoomId == RoomId || a.RoomId == -1) && a.Name.Contains(Search));
             return View("ManagePerson", new Tuple<IEnumerable<Room>, IEnumerable<Person>>(_db.Rooms, persons));
         }
+
+        [HttpGet]
+        public IActionResult PersonSearchHint(string Search)
+        {
+            var s = _db.Persons.Where(a => a.Name.Contains(Search)).Select(a => a.Name);
+
+            String r = null;
+            foreach(var person in s)
+            {
+                if(r == null)
+                {
+                    r = person;
+                } else
+                {
+					r = r + "," + person;
+				}
+            }
+
+			return Json(r);
+		}
 
         public IActionResult ManageItem()
         {

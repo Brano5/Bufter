@@ -7,7 +7,7 @@
 <div class="row">
 	<div class="col-md-8 text-center p-4">
 		<div class="row">
-			<form class="d-flex" role="search" asp-controller="Manage" asp-action="ManagePersonSearch" method="get">
+			<form name="personSearchForm" class="d-flex" role="search" asp-controller="Manage" asp-action="ManagePersonSearch" method="get">
 				<select class="form-select w-30" id="RoomId" name="RoomId">
 					<!option value="-1" @(Context.Request.Query["RoomId"] == "-1" ? "selected" : "")>Every</!option>
 					@foreach (Room room in Model.Item1)
@@ -15,9 +15,10 @@
 						<!option value="@room.Id" @(Context.Request.Query["RoomId"] == room.Id.ToString() ? "selected" : "")>@room.Name</!option>
 					}
 				</select>
-				<input class="form-control mx-2" type="search" placeholder="Search" aria-label="Search" id="Search" name="Search" value="@Context.Request.Query["Search"]">
+				<input class="form-control mx-2" type="search" placeholder="Search" aria-label="Search" id="Search" name="Search" autocomplete="off" value="@Context.Request.Query["Search"]" onkeyup="personSearchHint(this.value)" onfocus="personSearchHint(this.value)" @*onfocusout="personSearchHintClear()*@">
 				<button class="btn btn-outline-primary" type="submit">Filter</button>
 			</form>
+			<div class="list-group" id="personSearchHintTxt" style="position: absolute; overflow: auto; z-index: 9999; width: 50%; "></div>
 		</div>
 		<div class="row">
 			@foreach (Person person in Model.Item2)
@@ -67,6 +68,72 @@
 		</div>
 	</div>
 </div>
+
+<script>
+	function personSearchHint(search) {
+		personSearchHintPos();
+		personSearchHintClear();
+		if (search.length == 0) {
+			return;
+		} else {
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange = function () {
+				if (this.readyState == 4 && this.status == 200) {
+					if(this.responseText != "null"){
+						var a = this.responseText.slice(1, -1).split(',');
+						for (var i = 0; i < a.length; i++) {
+							var div = document.getElementById("personSearchHintTxt");
+							var button = document.createElement("button");
+							button.type = "button";
+							button.className = "list-group-item list-group-item-action";
+							//button.onclick = "setPersonSearch(this.value)";
+							button.setAttribute("onclick", "setPersonSearch(this.textContent);");
+							button.textContent = a[i];
+
+							div.appendChild(button);
+						}
+					} else {
+						var div = document.getElementById("personSearchHintTxt");
+						var button = document.createElement("button");
+						button.type = "button";
+						button.className = "list-group-item list-group-item-action";
+						button.disabled = true;
+						button.textContent = "No match";
+
+						div.appendChild(button);
+					}
+				}
+			};
+			xmlhttp.open("GET", "PersonSearchHint?Search=" + search, true);
+			xmlhttp.send();
+		}
+	}
+
+	function personSearchHintClear() {
+		var div = document.getElementById("personSearchHintTxt");
+		var child = div.lastElementChild;
+		while (child) {
+			div.removeChild(child);
+			child = div.lastElementChild;
+		}
+	}
+
+	function personSearchHintPos() {
+		var input = document.getElementById("Search");
+		var div = document.getElementById("personSearchHintTxt");
+
+		div.style.width = input.offsetWidth + "px";
+		div.style.left = input.offsetLeft + "px";
+		div.style.top = input.offsetTop + input.offsetHeight + "px";
+	}
+
+	function setPersonSearch(value) {
+		var input = document.getElementById("Search");
+		input.value = value;
+		document.personSearchForm.submit();
+		console.log("hej" + value);
+	}
+</script>
 
 
 
