@@ -67,12 +67,32 @@ footer p {
     height: 8vw;
 }
 
+.h-12vw {
+    height: 12vw;
+}
+
+.h-16vw {
+    height: 16vw;
+}
+
 .fs-5vw {
     font-size: 5vw;
 }
 
 .w-30 {
     width: 30%!important;
+}
+
+.w-40 {
+    width: 40% !important;
+}
+
+.w-50 {
+    width: 50% !important;
+}
+
+.w-60 {
+    width: 60% !important;
 }
 
 .plot {

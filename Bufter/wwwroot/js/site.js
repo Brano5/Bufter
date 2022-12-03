@@ -285,7 +285,7 @@ function saveEdit(a) {
                 hideEdit(a);
                 a.closest("tr").getElementsByClassName("editP name")[0].textContent = b[1];
                 a.closest("tr").getElementsByClassName("editP password")[0].textContent = b[2];
-                alert('User was successfully updated!', 'success');
+                alert('successfully edited!', 'success');
             }
         }
     };

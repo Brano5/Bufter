@@ -18,7 +18,7 @@
 				<input class="form-control mx-2" type="search" placeholder="Search" aria-label="Search" id="Search" name="Search" autocomplete="off" value="@Context.Request.Query["Search"]" onkeyup="searchHint(this.value, 'person')" onfocus="searchHint(this.value, 'person')" onfocusout="searchHintClearT()">
 				<button class="btn btn-outline-primary" type="submit">Filter</button>
 			</form>
-			<div class="list-group searchHintDiv" id="searchHintDiv"></div>
+			<div class="list-group" id="searchHintDiv"></div>
 		</div>
 		<div class="row">
 			@foreach (Person person in Model.Item2)
