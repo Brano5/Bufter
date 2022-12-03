@@ -78,3 +78,13 @@ footer p {
 .plot {
     width: 100%;
 }
+
+.searchHintDiv {
+    position: absolute;
+    overflow: auto;
+    z-index: 9999;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}

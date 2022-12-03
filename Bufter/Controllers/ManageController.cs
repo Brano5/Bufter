@@ -10,23 +10,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bufter.Controllers
 {
-	public class ManageController : Controller
-	{
+    public class ManageController : Controller
+    {
         private readonly ApplicationDBContext _db;
         private readonly IWebHostEnvironment env;
         private readonly LogManager _logManager;
 
         public ManageController(ApplicationDBContext db, IWebHostEnvironment environment, LogManager logManager)
-		{
-			_db = db;
+        {
+            _db = db;
             env = environment;
             _logManager = logManager;
         }
 
-		public ActionResult Index()
-		{
-			return View("ManageRoom", _db.Rooms);
-		}
+        public ActionResult Index()
+        {
+            return View("ManageRoom", _db.Rooms);
+        }
 
         public IActionResult ManageRoom()
         {
@@ -41,12 +41,10 @@ namespace Bufter.Controllers
         [HttpGet]
         public IActionResult ManagePersonSearch(int RoomId, string Search)
         {
-            if (Search == null || Search == "")
-                return ManagePerson();
             IEnumerable<Person>? persons = null;
-            if(RoomId == -1 && Search == null)
+            if (RoomId == -1 && Search == null)
                 return ManagePerson();
-            if(RoomId == -1)
+            if (RoomId == -1)
                 persons = _db.Persons.Where(a => a.Name.Contains(Search));
             if (Search == null)
                 persons = _db.Persons.Where(a => a.RoomId == RoomId || a.RoomId == -1);
@@ -56,24 +54,34 @@ namespace Bufter.Controllers
         }
 
         [HttpGet]
-        public IActionResult PersonSearchHint(string Search)
+        public IActionResult PersonSearchHint(int RoomId, string Search)
         {
-            var s = _db.Persons.Where(a => a.Name.Contains(Search)).Select(a => a.Name);
-
-            String r = null;
-            foreach(var person in s)
+            IQueryable<string?> s;
+            if (RoomId == -1)
             {
-                if(r == null)
-                {
-                    r = person;
-                } else
-                {
-					r = r + "," + person;
-				}
+                s = _db.Persons.Where(a => a.Name.Contains(Search)).Select(a => a.Name);
+            }
+            else
+            {
+                s = _db.Persons.Where(a => (a.RoomId == RoomId || a.RoomId == -1) && a.Name.Contains(Search)).Select(a => a.Name);
             }
 
-			return Json(r);
-		}
+            String? r = null;
+            foreach (var person in s)
+            {
+
+                if (r == null)
+                {
+                    r = person;
+                }
+                else
+                {
+                    r = r + "," + person;
+                }
+            }
+
+            return Json(r);
+        }
 
         public IActionResult ManageItem()
         {
@@ -83,8 +91,6 @@ namespace Bufter.Controllers
         [HttpGet]
         public IActionResult ManageItemSearch(int RoomId, string Search)
         {
-            if (Search == null || Search == "")
-                return ManageItem();
             IEnumerable<Item>? items = null;
             if (RoomId == -1 && Search == null)
                 return ManageItem();
@@ -97,18 +103,48 @@ namespace Bufter.Controllers
             return View("ManageItem", new Tuple<IEnumerable<Room>, IEnumerable<Item>>(_db.Rooms, items));
         }
 
+        [HttpGet]
+        public IActionResult ItemSearchHint(int RoomId, string Search)
+        {
+            IQueryable<string?> s;
+            if (RoomId == -1)
+            {
+                s = _db.Items.Where(a => a.Name.Contains(Search)).Select(a => a.Name);
+            }
+            else
+            {
+                s = _db.Items.Where(a => (a.RoomId == RoomId || a.RoomId == -1) && a.Name.Contains(Search)).Select(a => a.Name);
+            }
+
+            String? r = null;
+            foreach (var person in s)
+            {
+
+                if (r == null)
+                {
+                    r = person;
+                }
+                else
+                {
+                    r = r + "," + person;
+                }
+            }
+
+            return Json(r);
+        }
+
         [HttpPost]
         public IActionResult CreateRoom(string Name, string Description, IFormFile Image)
         {
             if (Name == null || Name == "" || _db.Rooms.Where(a => a.Name == Name).Count() != 0)
             {
                 @TempData["Warning"] = "Wrong name!";
-                
+
                 return ManageRoom();
             }
             if (Description == null)
                 Description = "";
-                
+
             Room room = new Room();
             room.Name = Name;
             room.Description = Description;
@@ -131,7 +167,7 @@ namespace Bufter.Controllers
 
             _logManager.addLog("INFO", "Created Room " + Name + " by " + Request.Cookies["Person"], HttpContext);
             @TempData["Info"] = "Successfully created!";
-            
+
             return ManageRoom();
         }
 
@@ -148,7 +184,7 @@ namespace Bufter.Controllers
                 Description = "";
 
             Room? room = _db.Rooms.Find(Id);
-            if(room == null)
+            if (room == null)
             {
                 return ManageRoom();
             }
@@ -168,7 +204,7 @@ namespace Bufter.Controllers
 
             _logManager.addLog("INFO", "Edited Room " + Name + " by " + Request.Cookies["Person"], HttpContext);
             @TempData["Info"] = "Successfully edited!";
-            
+
             return ManageRoom();
         }
 
@@ -176,7 +212,7 @@ namespace Bufter.Controllers
         public IActionResult DeleteRoom(int Id)
         {
             var room = _db.Rooms.Find(Id);
-            if(room == null)
+            if (room == null)
             {
                 @TempData["Warning"] = "Failed deleted!";
                 return ManageRoom();
@@ -186,7 +222,7 @@ namespace Bufter.Controllers
 
             _logManager.addLog("INFO", "Deleted Room " + Id + " by " + Request.Cookies["Person"], HttpContext);
             @TempData["Info"] = "Successfully deleted!";
-            
+
             return ManageRoom();
         }
 
@@ -224,7 +260,7 @@ namespace Bufter.Controllers
 
             _logManager.addLog("INFO", "Created Person " + Name + " by " + Request.Cookies["Person"], HttpContext);
             @TempData["Info"] = "Successfully created!";
-            
+
             return ManagePerson();
         }
 
@@ -237,7 +273,7 @@ namespace Bufter.Controllers
 
                 return ManagePerson();
             }
-            if(Bill == null || Bill == "" || TotalBill == null || TotalBill == null)
+            if (Bill == null || Bill == "" || TotalBill == null || TotalBill == null)
             {
                 @TempData["Warning"] = "Wrong values!";
 
@@ -253,7 +289,7 @@ namespace Bufter.Controllers
             }
 
             Person? person = _db.Persons.Find(Id);
-            if(person == null)
+            if (person == null)
             {
                 return ManagePerson();
             }
@@ -275,7 +311,7 @@ namespace Bufter.Controllers
 
             _logManager.addLog("INFO", "Edited Person " + Name + " by " + Request.Cookies["Person"], HttpContext);
             @TempData["Info"] = "Successfully edited!";
-            
+
             return ManagePerson();
         }
 
@@ -293,7 +329,7 @@ namespace Bufter.Controllers
 
             _logManager.addLog("INFO", "Deleted Person " + Id + " by " + Request.Cookies["Person"], HttpContext);
             @TempData["Info"] = "Successfully deleted!";
-            
+
             return ManagePerson();
         }
 
@@ -351,7 +387,7 @@ namespace Bufter.Controllers
 
             _logManager.addLog("INFO", "Created Item " + Name + " by " + Request.Cookies["Person"], HttpContext);
             @TempData["Info"] = "Successfully created!";
-            
+
             return ManageItem();
         }
 
@@ -408,7 +444,7 @@ namespace Bufter.Controllers
 
             _logManager.addLog("INFO", "Edited Item " + Name + " by " + Request.Cookies["Person"], HttpContext);
             @TempData["Info"] = "Successfully edited!";
-            
+
             return ManageItem();
         }
 
@@ -416,7 +452,7 @@ namespace Bufter.Controllers
         public IActionResult DeleteItem(int Id)
         {
             var item = _db.Items.Find(Id);
-            if(item == null)
+            if (item == null)
             {
                 @TempData["Warning"] = "Failed deleted!";
                 return ManageItem();
@@ -427,13 +463,13 @@ namespace Bufter.Controllers
 
             _logManager.addLog("INFO", "Deleted Item " + Id + " by " + Request.Cookies["Person"], HttpContext);
             @TempData["Info"] = "Successfully deleted!";
-            
+
             return ManageItem();
         }
 
         public IActionResult AddMoney(string person, string amount)
         {
-            if(person == null || person == "" || amount == null || amount == "")
+            if (person == null || person == "" || amount == null || amount == "")
             {
                 @TempData["Waring"] = "Failed added money!";
 
@@ -444,7 +480,7 @@ namespace Bufter.Controllers
             {
                 return ManagePerson();
             }
-            if(amount == "0")
+            if (amount == "0")
             {
                 personDb.Bill = 0;
             }
@@ -454,7 +490,7 @@ namespace Bufter.Controllers
             }
             _db.Persons.Update(personDb);
             _db.SaveChanges();
-            
+
             _logManager.addLog("INFO", "Add Money " + person + " amount " + amount + " by " + Request.Cookies["Person"], HttpContext);
             @TempData["Info"] = "Successfully added money!";
 

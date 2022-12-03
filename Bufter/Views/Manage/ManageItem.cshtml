@@ -15,9 +15,10 @@
 						<!option value="@room.Id" @(Context.Request.Query["RoomId"]==room.Id.ToString()?"selected":"")>@room.Name</!option>
 					}
 				</select>
-				<input class="form-control mx-2" type="search" placeholder="Search" aria-label="Search" id="Search" name="Search" value="@Context.Request.Query["Search"]">
+				<input class="form-control mx-2" type="search" placeholder="Search" aria-label="Search" id="Search" name="Search" autocomplete="off" value="@Context.Request.Query["Search"]" onkeyup="searchHint(this.value, 'item')" onfocus="searchHint(this.value, 'item')" onfocusout="searchHintClearT()">
 				<button class="btn btn-outline-primary" type="submit">Filter</button>
 			</form>
+			<div class="list-group searchHintDiv" id="searchHintDiv"></div>
 		</div>
 		<div class="row">
 			@foreach (Item item in Model.Item2)

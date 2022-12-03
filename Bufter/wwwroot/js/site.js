@@ -160,3 +160,136 @@ function chartPlotly(x, y) {
             }, false)
         })
 })()
+
+
+//autocomplete search via AJAX
+function searchHint(search, db) {
+    searchHintPos();
+    searchHintClear();
+    if (search.length == 0) {
+        return;
+    } else {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                if (this.responseText != "null") {
+                    var a = this.responseText.slice(1, -1).split(',');
+                    for (var i = 0; i < a.length; i++) {
+                        var div = document.getElementById("searchHintDiv");
+                        var button = document.createElement("button");
+                        button.type = "button";
+                        button.className = "list-group-item list-group-item-action";
+                        //button.onclick = "setPersonSearch(this.value)";
+                        button.setAttribute("onclick", "setSearchValue(this.textContent);");
+                        button.textContent = a[i];
+
+                        div.appendChild(button);
+                    }
+                } else {
+                    var div = document.getElementById("searchHintDiv");
+                    var button = document.createElement("button");
+                    button.type = "button";
+                    button.className = "list-group-item list-group-item-action";
+                    button.disabled = true;
+                    button.textContent = "No match";
+
+                    div.appendChild(button);
+                }
+            }
+        };
+        xmlhttp.open("GET", db + "SearchHint?RoomId=" + document.getElementById("RoomId").value + "&Search=" + search, true);
+        xmlhttp.send();
+    }
+}
+
+function searchHintClear() {
+    var div = document.getElementById("searchHintDiv");
+    if (div != null) {
+        var child = div.lastElementChild;
+        while (child) {
+            div.removeChild(child);
+            child = div.lastElementChild;
+        }
+    }
+}
+
+function searchHintClearT() {
+    setTimeout(function () { 
+    var div = document.getElementById("searchHintDiv");
+    if (div != null) {
+        var child = div.lastElementChild;
+        while (child) {
+            div.removeChild(child);
+            child = div.lastElementChild;
+        }
+        }
+    }, 100);
+}
+
+function searchHintPos() {
+    var input = document.getElementById("Search");
+    var div = document.getElementById("searchHintDiv");
+    if (input != null && div != null) {
+        div.style.width = input.offsetWidth + "px";
+        div.style.left = input.offsetLeft + "px";
+        div.style.top = input.offsetTop + input.offsetHeight + "px";
+    }
+}
+
+function setSearchValue(value) {
+    var input = document.getElementById("Search");
+    if (input != null) {
+        input.value = value;
+        input.parentElement.submit();
+    }
+}
+
+window.onresize = function (event) {
+    searchHintClear();
+};
+
+
+// in table editing via AJAX
+function showEdit(a) {
+    $(a).closest("tr").find(".editP").hide();
+    $(a).closest("tr").find(".editInput").show();
+
+    $(a).closest("tr").find(".editA").hide();
+    $(a).closest("tr").find(".removeA").hide();
+    $(a).closest("tr").find(".cancelA").show();
+    $(a).closest("tr").find(".saveA").show();
+}
+
+function hideEdit(a) {
+    $(a).closest("tr").find(".editP").show();
+    $(a).closest("tr").find(".editInput").hide();
+
+    $(a).closest("tr").find(".editA").show();
+    $(a).closest("tr").find(".removeA").show();
+    $(a).closest("tr").find(".cancelA").hide();
+    $(a).closest("tr").find(".saveA").hide();
+}
+
+function saveEdit(a) {
+    var id = a.closest("tr").firstChild.textContent;
+    var name = a.closest("tr").getElementsByClassName("editInput name")[0].value;
+    var password = a.closest("tr").getElementsByClassName("editInput password")[0].value;
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var b = this.responseText.slice(1, -1).split(',');
+            if (b[0] == "warning") {
+                alert(b[1], 'warning');
+            } else {
+                hideEdit(a);
+                a.closest("tr").getElementsByClassName("editP name")[0].textContent = b[1];
+                a.closest("tr").getElementsByClassName("editP password")[0].textContent = b[2];
+                alert('User was successfully updated!', 'success');
+            }
+        }
+    };
+    xmlhttp.open("POST", "Edit?Id=" + id + "&Name=" + name + "&Password=" + password, true);
+    xmlhttp.send();
+}
+

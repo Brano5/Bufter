@@ -59,29 +59,26 @@ namespace Bufter.Controllers
         {
             if (Name == null || Name == "" || _db.Rooms.Where(a => a.Name == Name).Count() > 1)
             {
-                @TempData["Warning"] = "Wrong name!";
-                return Index();
-            }
-            if (Password == null || Password == "")
-            {
-                return Index();
+                return Json("warning,Wrong name!");
             }
 
             User? user = _db.Users.Find(Id);
             if (user == null)
             {
-                return Index();
+                return Json("warning,User not found!");
             }
             user.Name = Name;
-            user.Password = CustomHelper.HashPassword(Password, user.Name);
+            if (Password != null && Password != "")
+            {
+                user.Password = CustomHelper.HashPassword(Password, user.Name);
+            }
             user.Updated = DateTime.Now;
             _db.Users.Update(user);
             _db.SaveChanges();
 
             _logManager.addLog("INFO", "Edited User " + Name + " by " + Request.Cookies["Person"], HttpContext);
-            @TempData["Info"] = "Succesfull updated!";
-            
-            return Index();
+
+            return Json("success," + user.Name + "," + user.Password);
         }
 
         [HttpPost]
