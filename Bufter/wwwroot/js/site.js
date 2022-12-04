@@ -197,7 +197,7 @@ function searchHint(search, db) {
                 }
             }
         };
-        xmlhttp.open("GET", db + "SearchHint?RoomId=" + document.getElementById("RoomId").value + "&Search=" + search, true);
+        xmlhttp.open("GET", "../../Manage/" + db + "SearchHint?RoomId=" + document.getElementById("RoomId").value + "&Search=" + search, true);
         xmlhttp.send();
     }
 }
@@ -285,11 +285,12 @@ function saveEdit(a) {
                 hideEdit(a);
                 a.closest("tr").getElementsByClassName("editP name")[0].textContent = b[1];
                 a.closest("tr").getElementsByClassName("editP password")[0].textContent = b[2];
+                a.closest("tr").getElementsByClassName("editTd updated")[0].textContent = b[3];
                 alert('successfully edited!', 'success');
             }
         }
     };
-    xmlhttp.open("POST", "Edit?Id=" + id + "&Name=" + name + "&Password=" + password, true);
+    xmlhttp.open("POST", "../../User/Edit?Id=" + id + "&Name=" + name + "&Password=" + password, true);
     xmlhttp.send();
 }
 

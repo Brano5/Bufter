@@ -78,7 +78,7 @@ namespace Bufter.Controllers
 
             _logManager.addLog("INFO", "Edited User " + Name + " by " + Request.Cookies["Person"], HttpContext);
 
-            return Json("success," + user.Name + "," + user.Password);
+            return Json("success," + user.Name + "," + user.Password + "," + user.Updated);
         }
 
         [HttpPost]
