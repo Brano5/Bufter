@@ -47,5 +47,5 @@ namespace Bufter.Helpers
             // Return the hash as a base64 encoded string to be compared to the stored password
             return Convert.ToBase64String(hash);
         }
-    }
+	}
 }

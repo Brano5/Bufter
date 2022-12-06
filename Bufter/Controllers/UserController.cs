@@ -42,9 +42,9 @@ namespace Bufter.Controllers
 
             User user = new User();
             user.Name = Name;
-            user.Password = CustomHelper.HashPassword(Password, Name);
             user.Created = DateTime.Now;
-            user.Updated = DateTime.Now;
+			user.Password = CustomHelper.HashPassword(Password, Name);
+			user.Updated = DateTime.Now;
             _db.Users.Add(user);
             _db.SaveChanges();
 
@@ -70,8 +70,8 @@ namespace Bufter.Controllers
             user.Name = Name;
             if (Password != null && Password != "")
             {
-                user.Password = CustomHelper.HashPassword(Password, user.Name);
-            }
+                user.Password = CustomHelper.HashPassword(Password, Name);
+			}
             user.Updated = DateTime.Now;
             _db.Users.Update(user);
             _db.SaveChanges();

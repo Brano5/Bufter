@@ -171,6 +171,8 @@ function searchHint(search, db) {
     } else {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function () {
+            searchHintPos();
+            searchHintClear();
             if (this.readyState == 4 && this.status == 200) {
                 if (this.responseText != "null") {
                     var a = this.responseText.slice(1, -1).split(',');
@@ -249,7 +251,7 @@ window.onresize = function (event) {
 };
 
 
-// in table editing via AJAX
+//in table editing via AJAX
 function showEdit(a) {
     $(a).closest("tr").find(".editP").hide();
     $(a).closest("tr").find(".editInput").show();
