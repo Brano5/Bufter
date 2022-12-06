@@ -48,26 +48,29 @@ namespace Bufter.Controllers
                 return RedirectToAction("Index", "Login");
             }
 
-            User user = _db.Users.Where(a => a.Name == Name).Where(b => b.Password == CustomHelper.HashPassword(Password, Name)).FirstOrDefault();
-            if (user != null)
+            User? user = _db.Users.Where(a => a.Name == Name).FirstOrDefault();
+            if(user != null)
             {
-                var claims = new List<Claim>{ new Claim(ClaimTypes.Name, user.Name) };
+                if(user.Password == CustomHelper.HashPassword(Password, user.Salt))
+                {
+					var claims = new List<Claim> { new Claim(ClaimTypes.Name, user.Name) };
 
-                var claimsIdentity = new ClaimsIdentity(
-                    claims, CookieAuthenticationDefaults.AuthenticationScheme);
+					var claimsIdentity = new ClaimsIdentity(
+						claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                var authProperties = new AuthenticationProperties();
+					var authProperties = new AuthenticationProperties();
 
-                HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity),
-                    authProperties);
+					HttpContext.SignInAsync(
+						CookieAuthenticationDefaults.AuthenticationScheme,
+						new ClaimsPrincipal(claimsIdentity),
+						authProperties);
 
-                _logManager.addLog("INFO", "Login User " + Name + " by " + Request.Cookies["Person"], HttpContext);
-                @TempData["Info"] = "User successfuly logged in!";
+					_logManager.addLog("INFO", "Login User " + Name + " by " + Request.Cookies["Person"], HttpContext);
+					@TempData["Info"] = "User successfuly logged in!";
 
-                return RedirectToAction("Index", "User");
-            }
+					return RedirectToAction("Index", "User");
+				}
+			}
 
             _logManager.addLog("INFO", "Login User Failed " + Name + " by " + Request.Cookies["Person"], HttpContext);
             @TempData["Warning"] = "User was not logged in!";

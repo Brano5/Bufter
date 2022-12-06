@@ -42,8 +42,9 @@ namespace Bufter.Controllers
 
             User user = new User();
             user.Name = Name;
-            user.Created = DateTime.Now;
-			user.Password = CustomHelper.HashPassword(Password, Name);
+			user.Salt = CustomHelper.CreateSalt();
+			user.Password = CustomHelper.HashPassword(Password, user.Salt);
+			user.Created = DateTime.Now;
 			user.Updated = DateTime.Now;
             _db.Users.Add(user);
             _db.SaveChanges();
@@ -57,7 +58,7 @@ namespace Bufter.Controllers
         [HttpPost]
         public IActionResult Edit(int Id, string Name, string Password)
         {
-            if (Name == null || Name == "" || _db.Rooms.Where(a => a.Name == Name).Count() > 1)
+            if (Name == null || Name == "" || _db.Users.Where(a => a.Name == Name).Count() != 0)
             {
                 return Json("warning,Wrong name!");
             }
@@ -70,7 +71,7 @@ namespace Bufter.Controllers
             user.Name = Name;
             if (Password != null && Password != "")
             {
-                user.Password = CustomHelper.HashPassword(Password, Name);
+                user.Password = CustomHelper.HashPassword(Password, user.Salt);
 			}
             user.Updated = DateTime.Now;
             _db.Users.Update(user);
