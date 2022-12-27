@@ -486,8 +486,8 @@ namespace Bufter.Controllers
             }
             else
             {
-                personDb.Bill +=  Math.Round(double.Parse(amount, CultureInfo.InvariantCulture.NumberFormat), 2);
-            }
+				personDb.Bill = Math.Round(personDb.Bill + double.Parse(amount, CultureInfo.InvariantCulture.NumberFormat), 2);
+			}
             _db.Persons.Update(personDb);
             _db.SaveChanges();
 

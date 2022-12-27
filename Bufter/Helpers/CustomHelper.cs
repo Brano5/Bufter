@@ -47,5 +47,13 @@ namespace Bufter.Helpers
             // Return the hash as a base64 encoded string to be compared to the stored password
             return Convert.ToBase64String(hash);
         }
-    }
+
+		public static string CreateSalt()
+		{
+			var buffer = new byte[16];
+			var rng = new RNGCryptoServiceProvider();
+			rng.GetBytes(buffer);
+			return Convert.ToBase64String(buffer);
+		}
+	}
 }

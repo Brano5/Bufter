@@ -88,9 +88,10 @@
 						</div>
 					</div>
 					<div class="row align-items-center">
-						<label for="RoomIdCreateModal" class="col-sm-3 col-form-label text-end">Room</label>
+						<label for="RoomIdCreateModal" class="col-sm-3 col-form-label text-end">Room*</label>
 						<div class="col-sm-9">
 							<select class="form-select" id="RoomIdCreateModal" name="RoomId" aria-label="Default select example" required>
+								<option value="">Choose room</option>
 								<option value="-1">Every</option>
 								@foreach (Room room in Model.Item1)
 								{
@@ -137,9 +138,10 @@
 						</div>
 					</div>
 					<div class="row align-items-center">
-						<label for="RoomIdEditModal" class="col-sm-3 col-form-label text-end">Room</label>
+						<label for="RoomIdEditModal" class="col-sm-3 col-form-label text-end">Room*</label>
 						<div class="col-sm-9">
 							<select class="form-select" id="RoomIdEditModal" name="RoomId" aria-label="Default select example" required>
+								<option value="">Choose room</option>
 								<option value="-1">Every</option>
 								@foreach (Room room in Model.Item1)
 								{

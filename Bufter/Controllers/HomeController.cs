@@ -165,8 +165,8 @@ namespace Bufter.Controllers
             {
                 return Person(room);
             }
-            personDb.TotalBill += price;
-            personDb.Bill -= price;
+            personDb.TotalBill = Math.Round(personDb.TotalBill + price, 2);
+            personDb.Bill = Math.Round(personDb.Bill - price, 2);
             _db.Persons.Update(personDb);
             _db.SaveChanges();
 
@@ -194,7 +194,7 @@ namespace Bufter.Controllers
             }
             else
             {
-                personDb.Bill +=  Math.Round(double.Parse(amount, CultureInfo.InvariantCulture.NumberFormat), 2);
+                personDb.Bill = Math.Round(personDb.Bill + double.Parse(amount, CultureInfo.InvariantCulture.NumberFormat), 2);
             }
             _db.Persons.Update(personDb);
             _db.SaveChanges();
