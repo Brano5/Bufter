@@ -1,4 +1,4 @@
-﻿@using Bufter.Model
+﻿@using Bufter.Models
 @model IEnumerable<Room>
 @{
 	ViewData["Title"] = "Manage Room";
@@ -11,14 +11,14 @@
 			{
 				<div class="col-12 col-md-6 col-lg-4 col-xl-3 p-2">
 					<div class="card">
-						<div style="height: 8vw;">
+						<div class="h-8vw">
 							@if (@room.Image != "")
 							{
-								<img src="~/uploads/@room.Image" class="card-img-top" style="width:auto; height:auto; max-width:100%; max-height:100%">
+								<img src="~/uploads/@room.Image" alt="@room.Image" class="card-img-top img-letter">
 							}
 							else
 							{
-								<p style="font-size: 5vw" class="mb-0">@room.Name[0]</p>
+								<p class="mb-0 fs-5vw">@room.Name[0]</p>
 							}
 						</div>
 						<div class="card-body">
@@ -43,7 +43,7 @@
 	</div>
 
 	<div class="col-md-4 p-4 mt-4">
-		<div class="btn-group-vertical" style="width: 100%">
+		<div class="btn-group-vertical w-100">
 			<a class="btn btn-primary active" role="button" asp-controller="Manage" asp-action="ManageRoom">Room</a>
 			<a class="btn btn-primary" role="button" asp-controller="Manage" asp-action="ManagePerson">Person</a>
 			<a class="btn btn-primary" role="button" asp-controller="Manage" asp-action="ManageItem">Item</a>
@@ -56,28 +56,31 @@
 <div class="modal fade" id="createModal" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form asp-controller="Manage" asp-action="CreateRoom" method="post" enctype="multipart/form-data">
+			<form asp-controller="Manage" asp-action="CreateRoom" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
 				<div class="modal-header">
 					<h5 class="modal-title">Create Room</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div class="row align-items-center">
-						<label for="Name" class="col-sm-3 col-form-label text-end">Name*</label>
+						<label for="NameCreateModal" class="col-sm-3 col-form-label text-end">Name*</label>
 						<div class="col-sm-9">
-							<input class="form-control" type="text" id="Name" name="Name">
+							<input class="form-control" type="text" id="NameCreateModal" name="Name" required>
+							<div class="invalid-feedback">
+								Please provide a valid name.
+							</div>
 						</div>
 					</div>
 					<div class="row align-items-center">
-						<label for="Description" class="col-sm-3 col-form-label text-end">Description</label>
+						<label for="DescriptionCreateModal" class="col-sm-3 col-form-label text-end">Description</label>
 						<div class="col-sm-9">
-							<input class="form-control" type="text" id="Description" name="Description">
+							<input class="form-control" type="text" id="DescriptionCreateModal" name="Description">
 						</div>
 					</div>
 					<div class="row align-items-center">
-						<label for="Image" class="col-sm-3 col-form-label text-end">Image</label>
+						<label for="ImageCreateModal" class="col-sm-3 col-form-label text-end">Image</label>
 						<div class="col-sm-9">
-							<input class="form-control" type="file" id="Image" name="Image">
+							<input class="form-control" type="file" id="ImageCreateModal" name="Image">
 						</div>
 					</div>
 				</div>
@@ -93,34 +96,37 @@
 <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form asp-controller="Manage" asp-action="EditRoom" method="post" enctype="multipart/form-data">
+			<form asp-controller="Manage" asp-action="EditRoom" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
 				<div class="modal-header">
 					<h5 class="modal-title">Edit Room</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div class="row align-items-center">
-						<label for="Name" class="col-sm-3 col-form-label text-end">Name*</label>
+						<label for="NameEditModal" class="col-sm-3 col-form-label text-end">Name*</label>
 						<div class="col-sm-9">
-							<input class="form-control" type="text" id="Name" name="Name">
+							<input class="form-control" type="text" id="NameEditModal" name="Name" required>
+							<div class="invalid-feedback">
+								Please provide a valid name.
+							</div>
 						</div>
 					</div>
 					<div class="row align-items-center">
-						<label for="Description" class="col-sm-3 col-form-label text-end">Description</label>
+						<label for="DescriptionEditModal" class="col-sm-3 col-form-label text-end">Description</label>
 						<div class="col-sm-9">
-							<input class="form-control" type="text" id="Description" name="Description">
+							<input class="form-control" type="text" id="DescriptionEditModal" name="Description">
 						</div>
 					</div>
 					<div class="row align-items-center">
-						<label for="Image" class="col-sm-3 col-form-label text-end">Image</label>
+						<label for="ImageEditModal" class="col-sm-3 col-form-label text-end">Image</label>
 						<div class="col-sm-9">
-							<input class="form-control" type="file" id="Image" name="Image" accept="image/png, image/jpeg">
+							<input class="form-control" type="file" id="ImageEditModal" name="Image" accept="image/png, image/jpeg">
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-					<input class="form-control" type="hidden" id="Id" Name="Id">
+					<input class="form-control" type="hidden" id="IdEditModal" Name="Id">
 					<button type="submit" class="btn btn-primary">Save</button>
 				</div>
 			</form>
@@ -141,7 +147,7 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 				<form asp-controller="Manage" asp-action="DeleteRoom" method="post">
-					<input class="form-control" type="hidden" id="Id" Name="Id">
+					<input class="form-control" type="hidden" id="IdDeleteModal" Name="Id">
 					<button type="submit" class="btn btn-primary">Delete</button>
 				</form>
 			</div>

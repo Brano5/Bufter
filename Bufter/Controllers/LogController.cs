@@ -1,5 +1,4 @@
 ﻿using Bufter.Data;
-using Bufter.Model;
 using Bufter.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +15,17 @@ namespace Bufter.Controllers
 
         public IActionResult Index()
 		{
-            return View("log", new Tuple<IEnumerable<BuyLog>, IEnumerable<Log>>(_db.BuyLog, _db.Log));
+            return BuyLog();
         }
-	}
+
+        public IActionResult Log()
+        {
+            return View("Log", _db.Log);
+        }
+
+        public IActionResult BuyLog()
+        {
+            return View("BuyLog", _db.BuyLog);
+        }
+    }
 }

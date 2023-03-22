@@ -1,81 +1,51 @@
 ﻿@using Bufter.Models
-@model Tuple<IEnumerable<BuyLog>, IEnumerable<Log>>
+@using Bufter.Helpers
+@model IEnumerable<Log>
 @{
 	ViewData["Title"] = "Log";
 }
 
-<div class="row" id="log">
-	<div class="p-4 text-center">
-		<button class="btn btn-primary active changeActiveClass" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBuyLog" aria-expanded="false" aria-controls="collapseBuyLog">BuyLog</button>
-		<button class="btn btn-primary changeActiveClass" type="button" data-bs-toggle="collapse" data-bs-target="#collapseLog" aria-expanded="false" aria-controls="collapseLog">Log</button>
+@if (@Html.IsLogged())
+{
+	<div class="row" id="log">
+		<table class="table table-striped table-hover" data-toggle="table" data-search="true" data-paggination="true" data-show-columns="true" data-pagination="true">
+			<thead>
+				<tr>
+					<th scope="col" data-sortable="true">Id</th>
+					<th scope="col" data-sortable="true">Name</th>
+					<th scope="col" data-sortable="true">Description</th>
+					<th scope="col" data-sortable="true">Created</th>
+					<th scope="col" data-sortable="true">IpAddress</th>
+					<th scope="col" data-sortable="true">PcName</th>
+					<th scope="col" data-sortable="true">UserAgent</th>
+					<th scope="col" data-sortable="true">UniKey</th>
+				</tr>
+			</thead>
+			<tbody class="table-group-divider">
+				@foreach (Log log in Model)
+				{
+					<tr>
+						<th scope="row">@log.Id</th>
+						<td>@log.Name</td>
+						<td>@log.Description</td>
+						<td>@log.Created</td>
+						<td>@log.IpAddress</td>
+						<td>@log.PcName</td>
+						<td>@log.UserAgent</td>
+						<td>@log.UniKey</td>
+					</tr>
+				}
+			</tbody>
+		</table>
 	</div>
-
-	<div class="accordion-group">
-		<div class="collapse show" id="collapseBuyLog" data-bs-parent="#log">
-			<table class="table table-striped table-hover" data-toggle="table" data-search="true" data-paggination="true" data-show-columns="true" data-pagination="true">
-				<thead>
-					<tr>
-						<th scope="col" data-sortable="true">Id</th>
-						<th scope="col" data-sortable="true">Room</th>
-						<th scope="col" data-sortable="true">Person</th>
-						<th scope="col" data-sortable="true">Item</th>
-						<th scope="col" data-sortable="true">Description</th>
-						<th scope="col" data-sortable="true">Created</th>
-						<th scope="col" data-sortable="true">IpAddress</th>
-						<th scope="col" data-sortable="true">PcName</th>
-						<th scope="col" data-sortable="true">UserAgent</th>
-						<th scope="col" data-sortable="true">UniKey</th>
-					</tr>
-				</thead>
-				<tbody class="table-group-divider">
-					@foreach (BuyLog buyLog in Model.Item1.Reverse())
-					{
-						<tr>
-							<th scope="row">@buyLog.Id</th>
-							<td>@buyLog.Room</td>
-							<td>@buyLog.Person</td>
-							<td>@buyLog.Item</td>
-							<td>@buyLog.Description</td>
-							<td>@buyLog.Created</td>
-							<td>@buyLog.IpAddress</td>
-							<td>@buyLog.PcName</td>
-							<td>@buyLog.UserAgent</td>
-							<td>@buyLog.UniKey</td>
-						</tr>
-					}
-				</tbody>
-			</table>
-		</div>
-		<div class="collapse" id="collapseLog" data-bs-parent="#log">
-			<table class="table table-striped table-hover" data-toggle="table" data-search="true" data-paggination="true" data-show-columns="true" data-pagination="true">
-				<thead>
-					<tr>
-						<th scope="col" data-sortable="true">Id</th>
-						<th scope="col" data-sortable="true">Name</th>
-						<th scope="col" data-sortable="true">Description</th>
-						<th scope="col" data-sortable="true">Created</th>
-						<th scope="col" data-sortable="true">IpAddress</th>
-						<th scope="col" data-sortable="true">PcName</th>
-						<th scope="col" data-sortable="true">UserAgent</th>
-						<th scope="col" data-sortable="true">UniKey</th>
-					</tr>
-				</thead>
-				<tbody class="table-group-divider">
-					@foreach (Log log in Model.Item2.Reverse())
-					{
-						<tr>
-							<th scope="row">@log.Id</th>
-							<td>@log.Name</td>
-							<td>@log.Description</td>
-							<td>@log.Created</td>
-							<td>@log.IpAddress</td>
-							<td>@log.PcName</td>
-							<td>@log.UserAgent</td>
-							<td>@log.UniKey</td>
-						</tr>
-					}
-				</tbody>
-			</table>
+}
+else
+{
+	<div class="row justify-content-md-center text-center" id="log">
+		<div class="col-6">
+			<h1>You don't have permision for this action.</h1>
+			<h1>Please Log in</h1>
+			<a class="btn btn-primary" role="button" asp-controller="Login" asp-action="Index">Log in</a>
 		</div>
 	</div>
-</div>
+}

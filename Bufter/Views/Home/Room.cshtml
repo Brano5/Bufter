@@ -1,4 +1,4 @@
-﻿@using Bufter.Model
+﻿@using Bufter.Models
 @model IEnumerable<Room>
 @{
 	ViewData["Title"] = "Home";
@@ -12,14 +12,14 @@
 				<div class="col-12 col-md-6 col-lg-4 col-xl-3 p-2">
 					<a asp-controller="Home" asp-action="Person" asp-route-Room="@room.Name" class="text-decoration-none text-black">
 						<div class="card">
-							<div style="height: 8vw;">
+							<div class="h-8vw">
 								@if (@room.Image != "")
 								{
-									<img src="~/uploads/@room.Image" class="card-img-top" style="width:auto; height:auto; max-width:100%; max-height:100%">
+									<img src="~/uploads/@room.Image" alt="@room.Image" class="card-img-top img-letter">
 								}
 								else
 								{
-									<p style="font-size: 5vw" class="mb-0">@room.Name[0]</p>
+									<p class="mb-0 fs-5vw">@room.Name[0]</p>
 								}
 							</div>
 							<div class="card-body">
@@ -35,7 +35,7 @@
 	</div>
 
 	<div class="col-md-4 p-4 mt-4">
-		<div class="btn-group-vertical" style="width: 100%">
+		<div class="btn-group-vertical w-100">
 			<a class="btn btn-primary active" role="button" asp-controller="Home" asp-action="Room">Room</a>
 			<a class="btn btn-primary disabled" role="button" asp-controller="Home" asp-action="Person">Person</a>
 			<a class="btn btn-primary disabled" role="button" asp-controller="Home" asp-action="Item">Item</a>

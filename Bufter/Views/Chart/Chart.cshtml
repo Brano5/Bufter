@@ -1,9 +1,61 @@
 ﻿@using Bufter.Models
-@model Tuple<IEnumerable<BuyLog>, IEnumerable<Log>>
+@using Bufter.Helpers
+@using System.Web;
+@model IEnumerable<BuyLog>
 @{
 	ViewData["Title"] = "Chart";
 }
 
-<div>
-    <div id="myPlot" style="width:100%;max-width:700px"></div>
-</div>
+@if (@Html.IsLogged())
+{
+	<div>
+		<div id="myPlot" class="plot"></div>
+	</div>
+
+
+	Dictionary<DateTime, int> dictionary = new Dictionary<DateTime, int>();
+
+	foreach (var item in Model)
+	{
+		var datum = item.Created.Date;
+		int hodnota = 0;
+		if (dictionary.ContainsKey(datum))
+		{
+			dictionary[datum]++;
+		}
+		else
+		{
+			dictionary.Add(datum, 1);
+		}
+	}
+	var x = "";
+	string y = "[" + string.Join(", ", dictionary.Values) + "]";
+	foreach (var item in dictionary)
+	{
+		if (x == "")
+		{
+			x = "[\"" + item.Key.ToString() + "\"";
+		}
+		else
+		{
+			x = x + ", \"" + item.Key + "\"";
+		}
+	}
+	x = x + "]";
+
+	<script>
+		window.onload = function () {
+			chartPlotly(@Html.Raw(x), @y);
+		};
+	</script>
+}
+else
+{
+	<div class="row justify-content-md-center text-center" id="log">
+		<div class="col-6">
+			<h1>You don't have permision for this action.</h1>
+			<h1>Please Log in</h1>
+			<a class="btn btn-primary" role="button" asp-controller="Login" asp-action="Index">Log in</a>
+		</div>
+	</div>
+}

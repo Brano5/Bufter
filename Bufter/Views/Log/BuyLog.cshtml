@@ -1,0 +1,55 @@
+﻿@using Bufter.Models
+@using Bufter.Helpers
+@model IEnumerable<BuyLog>
+@{
+	ViewData["Title"] = "BuyLog";
+}
+
+@if (@Html.IsLogged())
+{
+	<div class="row" id="log">
+		<table class="table table-striped table-hover" data-toggle="table" data-search="true" data-paggination="true" data-show-columns="true" data-pagination="true">
+			<thead>
+				<tr>
+					<th scope="col" data-sortable="true">Id</th>
+					<th scope="col" data-sortable="true">Room</th>
+					<th scope="col" data-sortable="true">Person</th>
+					<th scope="col" data-sortable="true">Item</th>
+					<th scope="col" data-sortable="true">Description</th>
+					<th scope="col" data-sortable="true">Created</th>
+					<th scope="col" data-sortable="true">IpAddress</th>
+					<th scope="col" data-sortable="true">PcName</th>
+					<th scope="col" data-sortable="true">UserAgent</th>
+					<th scope="col" data-sortable="true">UniKey</th>
+				</tr>
+			</thead>
+			<tbody class="table-group-divider">
+				@foreach (BuyLog buyLog in Model)
+				{
+					<tr>
+						<th scope="row">@buyLog.Id</th>
+						<td>@buyLog.Room</td>
+						<td>@buyLog.Person</td>
+						<td>@buyLog.Item</td>
+						<td>@buyLog.Description</td>
+						<td>@buyLog.Created</td>
+						<td>@buyLog.IpAddress</td>
+						<td>@buyLog.PcName</td>
+						<td>@buyLog.UserAgent</td>
+						<td>@buyLog.UniKey</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	</div>
+}
+else
+{
+	<div class="row justify-content-md-center text-center" id="log">
+		<div class="col-6">
+			<h1>You don't have permision for this action.</h1>
+			<h1>Please Log in</h1>
+			<a class="btn btn-primary" role="button" asp-controller="Login" asp-action="Index">Log in</a>
+		</div>
+	</div>
+}

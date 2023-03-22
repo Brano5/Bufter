@@ -1,5 +1,4 @@
 ﻿using Bufter.Data;
-using Bufter.Model;
 using Bufter.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,10 +9,12 @@ namespace Bufter.Controllers
 	public class SettingsController : Controller
 	{
         private readonly ApplicationDBContext _db;
+        private readonly LogManager _logManager;
 
-        public SettingsController(ApplicationDBContext db)
+        public SettingsController(ApplicationDBContext db, LogManager logManager)
         {
             _db = db;
+            _logManager = logManager;
         }
 
         public IActionResult Index()
@@ -25,7 +26,11 @@ namespace Bufter.Controllers
             settings.SavePerson = Request.Cookies["SavePerson"] == "True" ? true : false;
             settings.Room = Request.Cookies["Room"];
             settings.Person = Request.Cookies["Person"];
-            settings.Bill = _db.Persons.Where(a => a.Name == settings.Person).FirstOrDefault().Bill;
+            var person = _db.Persons.Where(a => a.Name == settings.Person).FirstOrDefault();
+            if(person != null)
+            {
+                settings.Bill = person.Bill;
+            }
             return View("Settings", settings);
 		}
 
@@ -50,11 +55,21 @@ namespace Bufter.Controllers
             {
                 Response.Cookies.Delete("Person");
             }
+
+            _logManager.addLog("INFO", "Save settings", HttpContext);
+            @TempData["Info"] = "Succesfull Save settings!";
+
             return View("Settings", settings);
         }
 
         public IActionResult AddMoney(string person, string amount)
         {
+            if (person == null || person == "" || amount == null || amount == "")
+            {
+                @TempData["Waring"] = "Failed added money!";
+
+                return Index();
+            }
             Person? personDb = _db.Persons.Where(a => a.Name == person).FirstOrDefault();
             if(personDb == null)
             {
@@ -66,10 +81,13 @@ namespace Bufter.Controllers
             }
             else
             {
-                personDb.Bill +=  Math.Round(double.Parse(amount, CultureInfo.InvariantCulture.NumberFormat), 2);
+				personDb.Bill = Math.Round(personDb.Bill + double.Parse(amount, CultureInfo.InvariantCulture.NumberFormat), 2);
             }
             _db.Persons.Update(personDb);
             _db.SaveChanges();
+
+            _logManager.addLog("INFO", "Add money", HttpContext);
+            @TempData["Info"] = "Succesfull Added money!";
 
             return Index();
         }

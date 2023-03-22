@@ -1,5 +1,4 @@
 ﻿using Bufter.Data;
-using Bufter.Model;
 using Bufter.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,13 +10,11 @@ namespace Bufter.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDBContext _db;
         private readonly LogManager _logManager;
 
-        public HomeController(ILogger<HomeController> logger, ApplicationDBContext db, LogManager logManager)
+        public HomeController(ApplicationDBContext db, LogManager logManager)
         {
-            _logger = logger;
             _db = db;
             _logManager = logManager;
         }
@@ -138,15 +135,15 @@ namespace Bufter.Controllers
 
         public IActionResult Order(string room, string person, string item)
         {
-            if (room == null)
+            if (room == null || room == "")
             {
                 return Room();
             }
-            if (person == null)
+            if (person == null || person == "")
             {
                 return Person(room);
             }
-            if (item == null)
+            if (item == null || item == "")
             {
                 return Item(room, person);
             }
@@ -168,12 +165,13 @@ namespace Bufter.Controllers
             {
                 return Person(room);
             }
-            personDb.TotalBill += price;
-            personDb.Bill -= price;
+            personDb.TotalBill = Math.Round(personDb.TotalBill + price, 2);
+            personDb.Bill = Math.Round(personDb.Bill - price, 2);
             _db.Persons.Update(personDb);
             _db.SaveChanges();
 
             _logManager.addBuyLog(room, person, item, "Buy item", HttpContext);
+            @TempData["Info"] = "Succesfull Buy item!";
 
             //return Person(room);
             return Index();
@@ -183,6 +181,8 @@ namespace Bufter.Controllers
 
         public IActionResult AddMoney(string room, string person, string amount)
         {
+            if(room == null || person == null || amount == null || room == "" || person == "" || amount == "")
+                return Index();
             Person? personDb = _db.Persons.Where(a => a.Name == person).FirstOrDefault();
             if (personDb == null)
             {
@@ -194,10 +194,13 @@ namespace Bufter.Controllers
             }
             else
             {
-                personDb.Bill +=  Math.Round(double.Parse(amount, CultureInfo.InvariantCulture.NumberFormat), 2);
+                personDb.Bill = Math.Round(personDb.Bill + double.Parse(amount, CultureInfo.InvariantCulture.NumberFormat), 2);
             }
             _db.Persons.Update(personDb);
             _db.SaveChanges();
+
+            _logManager.addLog("INFO", "Add money", HttpContext);
+            @TempData["Info"] = "Succesfull Added money!";
 
             return Item(room, person);
         }

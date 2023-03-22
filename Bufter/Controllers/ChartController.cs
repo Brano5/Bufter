@@ -16,7 +16,7 @@ namespace Bufter.Controllers
 
         public IActionResult Index()
         {
-            return View("chart", new Tuple<IEnumerable<BuyLog>, IEnumerable<Log>>(_db.BuyLog, _db.Log));
+            return View("chart", _db.BuyLog);
         }
     }
 }

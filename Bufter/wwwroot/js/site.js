@@ -4,7 +4,7 @@ if (deleteModal != null) {
     deleteModal.addEventListener('show.bs.modal', event => {
         const button = event.relatedTarget
         deleteModal.querySelector('.modal-body p').textContent = `Delete ${button.getAttribute('data-bs-name')}?`
-        deleteModal.querySelector('.modal-footer #Id').value = button.getAttribute('data-bs-id')
+        deleteModal.querySelector('.modal-footer #IdDeleteModal').value = button.getAttribute('data-bs-id')
     })
 }
 
@@ -13,26 +13,26 @@ if (editModal != null) {
     editModal.addEventListener('show.bs.modal', event => {
         const button = event.relatedTarget
         const image = button.getAttribute('data-bs-image')
-        editModal.querySelector('.modal-body #Name').value = button.getAttribute('data-bs-name')
+        editModal.querySelector('.modal-body #NameEditModal').value = button.getAttribute('data-bs-name')
         if (button.getAttribute('data-bs-description') != null) {
-            editModal.querySelector('.modal-body #Description').value = button.getAttribute('data-bs-description')
+            editModal.querySelector('.modal-body #DescriptionEditModal').value = button.getAttribute('data-bs-description')
         }
         if (button.getAttribute('data-bs-roomId') != null) {
-            editModal.querySelector('.modal-body #RoomId').value = button.getAttribute('data-bs-roomId')
+            editModal.querySelector('.modal-body #RoomIdEditModal').value = button.getAttribute('data-bs-roomId')
         }
         if (button.getAttribute('data-bs-bill') != null) {
-            editModal.querySelector('.modal-body #Bill').value = button.getAttribute('data-bs-bill')
+            editModal.querySelector('.modal-body #BillEditModal').value = button.getAttribute('data-bs-bill')
         }
         if (button.getAttribute('data-bs-totalBill') != null) {
-            editModal.querySelector('.modal-body #TotalBill').value = button.getAttribute('data-bs-totalBill')
+            editModal.querySelector('.modal-body #TotalBillEditModal').value = button.getAttribute('data-bs-totalBill')
         }
         if (button.getAttribute('data-bs-count') != null) {
-            editModal.querySelector('.modal-body #Count').value = button.getAttribute('data-bs-count')
+            editModal.querySelector('.modal-body #CountEditModal').value = button.getAttribute('data-bs-count')
         }
         if (button.getAttribute('data-bs-price') != null) {
-            editModal.querySelector('.modal-body #Price').value = button.getAttribute('data-bs-price')
+            editModal.querySelector('.modal-body #PriceEditModal').value = button.getAttribute('data-bs-price')
         }
-        editModal.querySelector('.modal-footer #Id').value = button.getAttribute('data-bs-id')
+        editModal.querySelector('.modal-footer #IdEditModal').value = button.getAttribute('data-bs-id')
     })
 }
 
@@ -45,9 +45,10 @@ if (addMoneyModal != null) {
     })
 }
 
-//Popovers
+//Popovers from bootstrap
 const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
 const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+
 
 //Alert
 const alertPlaceholder = document.getElementById('alertPlaceholder')
@@ -92,35 +93,206 @@ function alert(message, type) {
     hide(id);
 }
 
+//Auto close alert
+function hide(id) {
+    setTimeout(function () {
+        $('#' + id).alert('close');
+    }, 5000);
+}
 
-$('.changeActiveClass').click(function (e) {
+//Alert auto dismis
+//const alerts = document.getElementsByClassName('alert-dismissible')
+//if (alerts != null) {
+//    alerts.each(function (i, obj) {
+//        hide(obj.id);
+//    });
+//}
 
-    $('.changeActiveClass').removeClass('active');
 
-    var $this = $(this);
-    if (!$this.hasClass('active')) {
-        $this.addClass('active');
+//$('.changeActiveClass').click(function (e) {
+
+//    $('.changeActiveClass').removeClass('active');
+
+//    var $this = $(this);
+//    if (!$this.hasClass('active')) {
+//        $this.addClass('active');
+//    }
+//});
+
+
+//Graf Plotly
+function chartPlotly(x, y) {
+    //Data
+    var data = [{
+        x: x,
+        y: y,
+        type: 'scatter'
+    }];
+
+    //Layout
+    var layout = {
+        xaxis: { autorange: true, title: "Dátum" },
+        yaxis: { autorange: true, title: "Počet" },
+        title: "Počet nákupov"
+    };
+
+    //Display Plotly
+    Plotly.newPlot("myPlot", data, layout);
+}
+
+//form validation from bootstrap
+(function () {
+    'use strict'
+
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.querySelectorAll('.needs-validation')
+
+    // Loop over them and prevent submission
+    Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+})()
+
+
+//autocomplete search via AJAX
+function searchHint(search, db) {
+    searchHintPos();
+    searchHintClear();
+    if (search.length == 0) {
+        return;
+    } else {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            searchHintPos();
+            searchHintClear();
+            if (this.readyState == 4 && this.status == 200) {
+                if (this.responseText != "null") {
+                    var a = this.responseText.slice(1, -1).split(',');
+                    for (var i = 0; i < a.length; i++) {
+                        var div = document.getElementById("searchHintDiv");
+                        var button = document.createElement("button");
+                        button.type = "button";
+                        button.className = "list-group-item list-group-item-action";
+                        //button.onclick = "setPersonSearch(this.value)";
+                        button.setAttribute("onclick", "setSearchValue(this.textContent);");
+                        button.textContent = a[i];
+
+                        div.appendChild(button);
+                    }
+                } else {
+                    var div = document.getElementById("searchHintDiv");
+                    var button = document.createElement("button");
+                    button.type = "button";
+                    button.className = "list-group-item list-group-item-action";
+                    button.disabled = true;
+                    button.textContent = "No match";
+
+                    div.appendChild(button);
+                }
+            }
+        };
+        xmlhttp.open("GET", "../../Manage/" + db + "SearchHint?RoomId=" + document.getElementById("RoomId").value + "&Search=" + search, true);
+        xmlhttp.send();
     }
-});
+}
 
+function searchHintClear() {
+    var div = document.getElementById("searchHintDiv");
+    if (div != null) {
+        var child = div.lastElementChild;
+        while (child) {
+            div.removeChild(child);
+            child = div.lastElementChild;
+        }
+    }
+}
 
+function searchHintClearT() {
+    setTimeout(function () { 
+    var div = document.getElementById("searchHintDiv");
+    if (div != null) {
+        var child = div.lastElementChild;
+        while (child) {
+            div.removeChild(child);
+            child = div.lastElementChild;
+        }
+        }
+    }, 100);
+}
 
-var xArray = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
-var yArray = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
+function searchHintPos() {
+    var input = document.getElementById("Search");
+    var div = document.getElementById("searchHintDiv");
+    if (input != null && div != null) {
+        div.style.width = input.offsetWidth + "px";
+        div.style.left = input.offsetLeft + "px";
+        div.style.top = input.offsetTop + input.offsetHeight + "px";
+    }
+}
 
-// Define Data
-var data = [{
-    x: xArray,
-    y: yArray,
-    mode: "lines"
-}];
+function setSearchValue(value) {
+    var input = document.getElementById("Search");
+    if (input != null) {
+        input.value = value;
+        input.parentElement.submit();
+    }
+}
 
-// Define Layout
-var layout = {
-    xaxis: { range: [40, 160], title: "Square Meters" },
-    yaxis: { range: [5, 16], title: "Price in Millions" },
-    title: "House Prices vs Size"
+window.onresize = function (event) {
+    searchHintClear();
 };
 
-// Display using Plotly
-Plotly.newPlot("myPlot", data, layout);
+
+//in table editing via AJAX
+function showEdit(a) {
+    $(a).closest("tr").find(".editP").hide();
+    $(a).closest("tr").find(".editInput").show();
+
+    $(a).closest("tr").find(".editA").hide();
+    $(a).closest("tr").find(".removeA").hide();
+    $(a).closest("tr").find(".cancelA").show();
+    $(a).closest("tr").find(".saveA").show();
+}
+
+function hideEdit(a) {
+    $(a).closest("tr").find(".editP").show();
+    $(a).closest("tr").find(".editInput").hide();
+
+    $(a).closest("tr").find(".editA").show();
+    $(a).closest("tr").find(".removeA").show();
+    $(a).closest("tr").find(".cancelA").hide();
+    $(a).closest("tr").find(".saveA").hide();
+}
+
+function saveEdit(a) {
+    var id = a.closest("tr").firstChild.textContent;
+    var name = a.closest("tr").getElementsByClassName("editInput name")[0].value;
+    var password = a.closest("tr").getElementsByClassName("editInput password")[0].value;
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var b = this.responseText.slice(1, -1).split(',');
+            if (b[0] == "warning") {
+                alert(b[1], 'warning');
+            } else {
+                hideEdit(a);
+                a.closest("tr").getElementsByClassName("editP name")[0].textContent = b[1];
+                a.closest("tr").getElementsByClassName("editP password")[0].textContent = b[2];
+                a.closest("tr").getElementsByClassName("editTd updated")[0].textContent = b[3];
+                alert('successfully edited!', 'success');
+            }
+        }
+    };
+    xmlhttp.open("POST", "../../User/Edit?Id=" + id + "&Name=" + name + "&Password=" + password, true);
+    xmlhttp.send();
+}
+
